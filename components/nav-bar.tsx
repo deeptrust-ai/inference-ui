@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import Logo from "./logo";
+import { DLogo } from "./logo";
 
 import {
   NavigationMenu,
@@ -30,10 +30,10 @@ const genLink = (title: string, link: string) => (
 
 export default function NavBar() {
   return (
-    <NavigationMenu>
+    <NavigationMenu className="p-6">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Logo width={100} height={24} />
+          <DLogo width={100} height={24} />
         </NavigationMenuItem>
         {navBarContent.map((item) => (
           <NavigationMenuItem key={item.title}>
