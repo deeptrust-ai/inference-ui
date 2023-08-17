@@ -17,7 +17,7 @@ import {
 // TODO: Add trigger logic for any trigger navbar menu items
 const navBarContent: { title: string; link?: string; trigger?: boolean }[] = [
   { title: "Home", link: "/" },
-  { title: "Demo", link: "https://demo.deeptrust.gg" },
+  { title: "Demo", link: "/demo" },
 ];
 
 const genLink = (title: string, link: string) => (
