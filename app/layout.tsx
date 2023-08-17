@@ -8,7 +8,7 @@ import NavBar from "@/components/nav-bar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "DeepTruth",
+  title: "DeepTrust",
   description: "Protect Human Authenticity with Deepfake Detection",
 };
 
