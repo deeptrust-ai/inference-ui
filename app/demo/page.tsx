@@ -7,8 +7,8 @@ export default function Page() {
       <h1 className="mb-3 text-2xl font-bold">DeepTrust Demo</h1>
 
       <p>
-        DeepTrust's deep-truth solution will be able to detect deepfake speech
-        audio.
+        DeepTrust&apos;s deep-truth solution will be able to detect deepfake
+        speech audio.
       </p>
       <p>
         <b>Disclaimer: </b>This is an alpha version of the model. Please note,
