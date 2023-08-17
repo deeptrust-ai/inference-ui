@@ -1,5 +1,16 @@
 import { Loader2 } from "lucide-react";
 
+// shadcn
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 export interface PredictCard {
   fileName: string;
   modelType: string;
@@ -15,39 +26,37 @@ export default function PredictCards(props: {
   return (
     <div>
       {loadingMsg && (
-        <div>
-          <span className="loading loading-infinity loading-lg text-center"></span>
+        <div className="flex gap-2 p-8">
           <Loader2 className="animate-spin" />
           <p>{loadingMsg}</p>
         </div>
       )}
       {cards.map((card, index) => (
-        <div
-          key={`card-${index}`}
-          className={`card m-10 w-96 text-primary-content ${
-            card.genPercentage > 0.5 ? "bg-warning" : "bg-success"
-          }`}
+        <Card
+          key={card.key}
+          className="flex flex-col justify-center m-12 bg-slate-600"
         >
-          <div className="card-body space-y-4">
-            <h2 className="card-title">
-              <div className="badge badge-accent">{card.key}</div>Speech
-              Predicted <span className="badge">{card.fileName}</span>
-            </h2>
-
+          <CardHeader>
+            <CardTitle className="">Speech Predicted</CardTitle>
+            <CardDescription>
+              <Badge variant={"outline"} className="mr-2">
+                {card.key}
+              </Badge>
+              <b>File: </b>
+              {card.fileName}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
             <p>
               According to deeptruth-{card.modelType}, this audio has a{" "}
               {card.genPercentage * 100}% of being being generated.
             </p>
-            <div className="card-actions justify-end">
-              <div className="badge badge-info hover:badge">
-                DeepTruth Alpha
-              </div>
-              <div className="badge badge-outline hover:badge">
-                Model: deeptruth-{card.modelType}
-              </div>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+          <CardFooter className="gap-2">
+            <Badge>DeepTruth Alpha</Badge>
+            <Badge>Model: deeptruth-{card.modelType}</Badge>
+          </CardFooter>
+        </Card>
       ))}
     </div>
   );
