@@ -58,9 +58,11 @@ export default function ModelTester() {
         return response.json();
       })
       .then((json) => {
+        let key = 0;
+        if (cards.length > 0) key = cards.at(0).key + 1;
         const newCard: PredictCard = {
           fileName: file.name,
-          key: cards.length + 1,
+          key,
           genPercentage: json.gen_percentage,
           modelType,
         };

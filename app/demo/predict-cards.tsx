@@ -15,7 +15,7 @@ export interface PredictCard {
   fileName: string;
   modelType: string;
   genPercentage: number;
-  key?: number;
+  key: number;
 }
 
 export default function PredictCards(props: {
