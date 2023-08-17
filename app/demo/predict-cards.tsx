@@ -1,3 +1,5 @@
+import { Loader2 } from "lucide-react";
+
 export interface PredictCard {
   fileName: string;
   modelType: string;
@@ -15,6 +17,7 @@ export default function PredictCards(props: {
       {loadingMsg && (
         <div>
           <span className="loading loading-infinity loading-lg text-center"></span>
+          <Loader2 className="animate-spin" />
           <p>{loadingMsg}</p>
         </div>
       )}
