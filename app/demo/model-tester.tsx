@@ -11,6 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 // icons
 import { ChevronDown } from "lucide-react";
@@ -97,7 +99,7 @@ export default function ModelTester() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-6 mt-12">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button>
@@ -126,17 +128,20 @@ export default function ModelTester() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <div className="flex space-x-3 p-100">
-        <input
-          type="file"
-          placeholder="Upload .wav audio"
-          className="file-input	file-input-bordered file-input-md w-full max-w-xs"
-          onChange={(e) => e.target.files && setFile(e.target.files[0])}
-        />
-        <button className="btn btn-primary" onClick={onPredict}>
-          {" "}
-          Predict{" "}
-        </button>
+      <div>
+        <Label htmlFor="audioFile">Upload .wav audio file</Label>
+        <div id="audioFile" className="grid grid-cols-3 gap-3 pt-2">
+          <div className="col-span-2">
+            <Input
+              type="file"
+              onChange={(e) => e.target.files && setFile(e.target.files[0])}
+            />
+          </div>
+          <Button className="btn btn-primary" onClick={onPredict}>
+            {" "}
+            Predict{" "}
+          </Button>
+        </div>
       </div>
       {errMsg && (
         <p className="alert alert-error">
