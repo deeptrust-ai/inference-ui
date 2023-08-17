@@ -1,6 +1,20 @@
 "use client";
 import { SVGProps, useState } from "react";
 
+// shadcn
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+
+// icons
+import { ChevronDown } from "lucide-react";
+
 import IconArrowDown from "@/components/icons/icon-arrow-down";
 import PredictCards, { type PredictCard } from "./predict-cards";
 
@@ -84,18 +98,20 @@ export default function ModelTester() {
 
   return (
     <div>
-      <div className="dropdown items-center text-center">
-        <label tabIndex={0} className="btn btn-default m-1">
-          {modelType ? `deeptruth-${modelType}` : "Choose DeepTruth Model"}{" "}
-          <IconArrowDown />
-        </label>
-        <ul
-          tabIndex={0}
-          className="dropdown-content bg-neutral z-[1] menu p-2 shadow rounded-box w-52"
-        >
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button>
+            {modelType ? `deeptruth-${modelType}` : "Choose DeepTruth Model"}{" "}
+            <ChevronDown />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>DeepTruth Models</DropdownMenuLabel>
+
+          <DropdownMenuSeparator />
           {MODEL_TYPES.map((type) => (
-            <li
-              className={`${type == "cnn" ? "disabled" : ""}`}
+            <DropdownMenuItem
+              disabled={type == "cnn"}
               key={type}
               id={type}
               onClick={(e) => {
@@ -104,16 +120,11 @@ export default function ModelTester() {
                 setModelType(type);
               }}
             >
-              <a>deeptruth-{type}</a>
-            </li>
+              deeptruth-{type}
+            </DropdownMenuItem>
           ))}
-        </ul>
-      </div>
-      <p>
-        <b>Disclaimer: </b>This is an alpha version of the model. Please note,
-        for performance keep audio files {"<"} 10 seconds. The longer the clip,
-        the longer the processing time.
-      </p>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <div className="flex space-x-3 p-100">
         <input
