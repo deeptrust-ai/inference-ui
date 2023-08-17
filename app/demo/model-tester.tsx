@@ -58,15 +58,14 @@ export default function ModelTester() {
         return response.json();
       })
       .then((json) => {
-        let key = 0;
-        if (cards.length > 0) key = cards.at(0).key + 1;
+        const key = cards.length ? cards[0].key + 1 : 0;
         const newCard: PredictCard = {
           fileName: file.name,
           key,
           genPercentage: json.gen_percentage,
           modelType,
         };
-        setCards([newCard, ...cards]);
+        setCards([newCard, ...cards].splice(0, 5));
         setLoadingMsg(null);
       })
       .catch((error) => {

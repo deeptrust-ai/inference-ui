@@ -3,7 +3,7 @@ import ModelTester from "./model-tester";
 export default function Page() {
   // render
   return (
-    <div className="flex flex-col mx-24 gap-4">
+    <div className="flex flex-col mx-24 gap-4 max-w-screen-md">
       <h1 className="mb-3 text-2xl font-bold">DeepTrust Demo</h1>
 
       <p>
