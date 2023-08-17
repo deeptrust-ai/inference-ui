@@ -20,6 +20,9 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 
+// supabase
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
 const formSchema = z.object({
   email: z.string().email(),
 });
@@ -36,12 +39,20 @@ export default function WaitList() {
   });
   const { toast } = useToast();
   if (!render) return null;
-
+  const supabase = createClientComponentClient();
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+
+    const { data, error } = await supabase
+      .from("emails")
+      .insert([values])
+      .select();
+
+    if (error) {
+      return;
+    }
     toast({
       title: "Welcome to DeepTrust!",
       description: `Added ${values.email} to waitlist.`,
