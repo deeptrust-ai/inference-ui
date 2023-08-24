@@ -17,14 +17,13 @@ import { Label } from "@/components/ui/label";
 // icons
 import { ChevronDown } from "lucide-react";
 
-import IconArrowDown from "@/components/icons/icon-arrow-down";
 import PredictCards, { type PredictCard } from "./predict-cards";
 
 const MODEL_TYPES = ["ss", "xgb", "cnn"];
 
 // ping server to boot it
 const healthCheck = async () => {
-  return await fetch("/api/", { mode: "no-cors" });
+  return await fetch("/api/");
 };
 
 export default function ModelTester() {
@@ -42,7 +41,56 @@ export default function ModelTester() {
     }
   }, []);
 
-  const onPredict = async () => {
+  const getEmbeddings = async () => {
+    if (!file) return;
+    const data = new FormData();
+    data.append("file", file);
+    data.append("fileName", file.name);
+
+    // fetch embeddings
+    const url = "/api/embeddings";
+    const options = {
+      method: "POST",
+      body: data,
+    };
+
+    try {
+      const embeddings = await fetch(url, options);
+      return await embeddings.json();
+    } catch (err) {
+      const errMessage = "Client error during getEmbeddings";
+      console.log(errMessage, err);
+      setErrMsg(errMessage);
+      setLoadingMsg(null);
+    }
+  };
+
+  const getPredict = async (embeddings: number[][]) => {
+    const url = "/api/predict";
+    const predictReqData = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ embeddings, modelType }),
+    };
+
+    try {
+      const prediction = await fetch(url, predictReqData).then((response) => {
+        setErrMsg(null);
+        return response.json();
+      });
+      return prediction;
+    } catch (err) {
+      const errMessage = "Client error during getPredict";
+      console.log(errMessage, err);
+      setErrMsg(errMessage);
+      setLoadingMsg(null);
+    }
+  };
+
+  const handlePredictButton = async () => {
+    // no file, no cnn
     if (!modelType || !file) return;
     if (modelType == "cnn") {
       alert(
@@ -50,66 +98,26 @@ export default function ModelTester() {
       );
       return;
     }
+
+    // get embeddings
+    setErrMsg(null);
     setLoadingMsg(
       "Generating Speech Embeddings (can take up to 1 or 2 minutes)..."
     );
-    setErrMsg(null);
-    const getEmbRes = await getEmbeddings();
-    const embeddings = getEmbRes.embeddings;
-    const url = `/api/${modelType}/predict`;
-    const predictReqData = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ embeddings }),
-    };
+    const embeddings = await getEmbeddings();
+
+    // get predictions
     setLoadingMsg("Predicting...");
-    fetch(url, predictReqData)
-      .then((response) => {
-        setErrMsg(null);
-        return response.json();
-      })
-      .then((json) => {
-        const key = cards.length ? cards[0].key + 1 : 0;
-        const newCard: PredictCard = {
-          fileName: file.name,
-          key,
-          genPercentage: json.gen_percentage,
-          modelType,
-        };
-        setCards([newCard, ...cards].splice(0, 5));
-        setLoadingMsg(null);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoadingMsg(null);
-        setErrMsg("Predict failed.");
-      });
-  };
-
-  // logic
-  const getEmbeddings = async () => {
-    if (!file) return;
-    const data = new FormData();
-    data.append("file", file);
-    data.append("fileName", file.name);
-
-    return await fetch("/api/embeddings", {
-      method: "POST",
-      body: data,
-    })
-      .then((res) => {
-        setErrMsg(null);
-        return res.json();
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoadingMsg(null);
-        setErrMsg(
-          "Embeddings generation failed, likely timeout between client and server."
-        );
-      });
+    const prediction = await getPredict(embeddings);
+    const key = cards.length ? cards[0].key + 1 : 0;
+    const newCard: PredictCard = {
+      fileName: file.name,
+      key,
+      genPercentage: prediction.gen_percentage,
+      modelType,
+    };
+    setCards([newCard, ...cards].splice(0, 5));
+    setLoadingMsg(null);
   };
 
   return (
@@ -151,7 +159,7 @@ export default function ModelTester() {
               onChange={(e) => e.target.files && setFile(e.target.files[0])}
             />
           </div>
-          <Button className="btn btn-primary" onClick={onPredict}>
+          <Button className="btn btn-primary" onClick={handlePredictButton}>
             {" "}
             Predict{" "}
           </Button>
