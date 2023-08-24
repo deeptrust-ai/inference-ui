@@ -1,5 +1,5 @@
 "use client";
-import { SVGProps, useEffect, useState } from "react";
+import { useState } from "react";
 
 // shadcn
 import {
@@ -21,25 +21,12 @@ import PredictCards, { type PredictCard } from "./predict-cards";
 
 const MODEL_TYPES = ["ss", "xgb", "cnn"];
 
-// ping server to boot it
-const healthCheck = async () => {
-  return await fetch("/api/");
-};
-
 export default function ModelTester() {
   const [modelType, setModelType] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>();
   const [cards, setCards] = useState<PredictCard[]>([]);
   const [loadingMsg, setLoadingMsg] = useState<string | null>(null);
   const [errMsg, setErrMsg] = useState<string | null>(null);
-
-  useEffect(() => {
-    try {
-      healthCheck();
-    } catch (err) {
-      console.error("Boot up failed", err);
-    }
-  }, []);
 
   const getEmbeddings = async () => {
     if (!file) return;
