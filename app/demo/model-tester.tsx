@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 // shadcn
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuCheckboxItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -15,14 +16,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 // icons
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Dot, MoreHorizontal } from "lucide-react";
 
 import PredictCards, { type PredictCard } from "./predict-cards";
 
 const MODEL_TYPES = ["ss", "xgb", "cnn"];
 
 export default function ModelTester() {
-  const [modelType, setModelType] = useState<string | null>(null);
+  const [modelType, setModelType] = useState<string>("ss");
   const [file, setFile] = useState<File | null>();
   const [cards, setCards] = useState<PredictCard[]>([]);
   const [loadingMsg, setLoadingMsg] = useState<string | null>(null);
@@ -109,47 +110,23 @@ export default function ModelTester() {
 
   return (
     <div className="flex flex-col gap-6 mt-12">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button>
-            {modelType ? `deeptruth-${modelType}` : "Choose DeepTruth Model"}{" "}
-            <ChevronDown />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>DeepTruth Models</DropdownMenuLabel>
-
-          <DropdownMenuSeparator />
-          {MODEL_TYPES.map((type) => (
-            <DropdownMenuItem
-              disabled={type == "cnn"}
-              key={type}
-              id={type}
-              onClick={(e) => {
-                const type = e.currentTarget.id;
-                if (type == "cnn") return;
-                setModelType(type);
-              }}
-            >
-              deeptruth-{type}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-
       <div>
         <Label htmlFor="audioFile">Upload .wav audio file</Label>
-        <div id="audioFile" className="grid grid-cols-3 gap-3 pt-2">
-          <div className="col-span-2">
+        <div id="audioFile" className="grid grid-cols-10 gap-3 pt-2">
+          <div className="col-span-6">
             <Input
               type="file"
               onChange={(e) => e.target.files && setFile(e.target.files[0])}
             />
           </div>
-          <Button className="btn btn-primary" onClick={handlePredictButton}>
+          <Button
+            className="btn btn-primary col-span-3"
+            onClick={handlePredictButton}
+          >
             {" "}
             Predict{" "}
           </Button>
+          <ModelDropdown modelType={modelType} setModelType={setModelType} />
         </div>
       </div>
       {errMsg && (
@@ -161,5 +138,53 @@ export default function ModelTester() {
 
       <PredictCards cards={cards} loadingMsg={loadingMsg} />
     </div>
+  );
+}
+
+function ModelDropdown({
+  modelType,
+  setModelType,
+  dropdown,
+}: {
+  modelType: string;
+  setModelType: Dispatch<SetStateAction<string>>;
+  dropdown?: boolean;
+}) {
+  return (
+    <DropdownMenu>
+      {dropdown && <Label htmlFor="dropdown">Choose DeepTruth Model</Label>}
+      <DropdownMenuTrigger asChild>
+        {dropdown ? (
+          <Button id="dropdown">
+            {modelType ? `deeptruth-${modelType}` : "Choose DeepTruth Model"}{" "}
+            <ChevronDown />
+          </Button>
+        ) : (
+          <Button variant={"outline"}>
+            <MoreHorizontal />
+          </Button>
+        )}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>DeepTruth Models</DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
+        {MODEL_TYPES.map((type) => (
+          <DropdownMenuCheckboxItem
+            disabled={type == "cnn"}
+            checked={modelType == type}
+            key={type}
+            id={type}
+            onClick={(e) => {
+              const type = e.currentTarget.id;
+              if (type == "cnn") return;
+              setModelType(type);
+            }}
+          >
+            deeptruth-{type}
+          </DropdownMenuCheckboxItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
