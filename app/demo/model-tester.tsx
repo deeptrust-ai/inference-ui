@@ -108,6 +108,9 @@ export default function ModelTester() {
     setLoadingMsg(null);
   };
 
+  const isPredictBtnDisabled =
+    loadingMsg != null || file == null || modelType == null;
+
   return (
     <div className="flex flex-col gap-6 mt-12">
       <div>
@@ -120,10 +123,10 @@ export default function ModelTester() {
             />
           </div>
           <Button
+            disabled={isPredictBtnDisabled}
             className="btn btn-primary col-span-3"
             onClick={handlePredictButton}
           >
-            {" "}
             Predict{" "}
           </Button>
           <ModelDropdown modelType={modelType} setModelType={setModelType} />
