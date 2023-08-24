@@ -17,14 +17,21 @@ export async function POST(request: NextRequest) {
   const ab = await file.arrayBuffer();
   const buffer = Buffer.from(ab);
   reqFormData.append("file", buffer, file.name);
+  const config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
 
   try {
-    const embeddings = await axios.post(url, reqFormData).then((res) => {
-      return res.data.embeddings;
-    });
+    const embeddings = await axios
+      .post(url, reqFormData, config)
+      .then((res) => {
+        return res.data.embeddings;
+      });
     return NextResponse.json(embeddings);
   } catch (err) {
     console.log("Error while generating embeddings in nextJS backend: ", err);
-    return NextResponse.json({ error: true });
+    return NextResponse.error();
   }
 }

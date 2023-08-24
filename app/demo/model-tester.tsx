@@ -29,8 +29,9 @@ export default function ModelTester() {
   const [loadingMsg, setLoadingMsg] = useState<string | null>(null);
   const [errMsg, setErrMsg] = useState<string | null>(null);
 
-  const getEmbeddings = async () => {
-    if (!file) return;
+  type getEmbeddingsType = [number[][] | null, any | null];
+  const getEmbeddings = async (): Promise<getEmbeddingsType> => {
+    if (!file) return [null, "Needs file to get embeddings."];
     const data = new FormData();
     data.append("file", file);
     data.append("fileName", file.name);
@@ -43,13 +44,18 @@ export default function ModelTester() {
     };
 
     try {
-      const embeddings = await fetch(url, options);
-      return await embeddings.json();
+      const embeddings = await fetch(url, options).then((response) => {
+        console.log("response", response);
+        setErrMsg(null);
+        return response.json();
+      });
+      return [embeddings, null];
     } catch (err) {
       const errMessage = "Client error during getEmbeddings";
       console.log(errMessage, err);
       setErrMsg(errMessage);
       setLoadingMsg(null);
+      return [null, err];
     }
   };
 
@@ -68,12 +74,13 @@ export default function ModelTester() {
         setErrMsg(null);
         return response.json();
       });
-      return prediction;
+      return [prediction, null];
     } catch (err) {
       const errMessage = "Client error during getPredict";
       console.log(errMessage, err);
       setErrMsg(errMessage);
       setLoadingMsg(null);
+      return [null, err];
     }
   };
 
@@ -92,11 +99,16 @@ export default function ModelTester() {
     setLoadingMsg(
       "Generating Speech Embeddings (can take up to 1 or 2 minutes)..."
     );
-    const embeddings = await getEmbeddings();
+    const [embeddings, embError] = await getEmbeddings();
+    console.log("test", embeddings);
+    console.log(embError);
+    if (embError) return;
+    if (!embeddings) return;
 
     // get predictions
     setLoadingMsg("Predicting...");
-    const prediction = await getPredict(embeddings);
+    const [prediction, predictError] = await getPredict(embeddings);
+    if (predictError) return;
     const key = cards.length ? cards[0].key + 1 : 0;
     const newCard: PredictCard = {
       fileName: file.name,
