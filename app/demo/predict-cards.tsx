@@ -34,11 +34,17 @@ export default function PredictCards(props: {
       {cards.map((card, index) => (
         <Card
           key={card.key}
-          className="flex flex-col justify-center m-12 bg-slate-600"
+          className={`flex flex-col justify-center m-12 ${
+            card.genPercentage < 0.5
+              ? "bg-green-500"
+              : card.genPercentage < 0.8
+              ? "bg-yellow-500"
+              : "bg-red-500"
+          }`}
         >
           <CardHeader>
             <CardTitle className="">Speech Predicted</CardTitle>
-            <CardDescription>
+            <CardDescription className="text-slate-200">
               <Badge variant={"outline"} className="mr-2">
                 {card.key}
               </Badge>
@@ -49,7 +55,7 @@ export default function PredictCards(props: {
           <CardContent>
             <p>
               According to deeptruth-{card.modelType}, this audio has a{" "}
-              {card.genPercentage * 100}% of being being generated.
+              <b>{card.genPercentage * 100}%</b> of being being generated.
             </p>
           </CardContent>
           <CardFooter className="gap-2">
