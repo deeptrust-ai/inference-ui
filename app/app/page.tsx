@@ -1,6 +1,5 @@
 import Section from "@/components/Section";
 import Input from "./input";
-import Jobs from "@/components/job/Jobs";
 
 export default function Page() {
   return (
@@ -13,7 +12,6 @@ export default function Page() {
       </div>
 
       <Input />
-      <Jobs />
     </div>
   );
 }
