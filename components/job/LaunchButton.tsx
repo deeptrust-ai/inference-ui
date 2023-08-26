@@ -41,3 +41,5 @@ const LaunchButton = (props: propsType) => {
     </Button>
   );
 };
+
+export default LaunchButton;
