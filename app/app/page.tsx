@@ -1,4 +1,5 @@
 import Section from "@/components/Section";
+import Input from "./input";
 
 export default function Page() {
   return (
@@ -9,6 +10,8 @@ export default function Page() {
           Launch deepfake detections jobs using the deeptruth technology.
         </div>
       </div>
+
+      <Input />
     </div>
   );
 }
