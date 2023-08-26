@@ -17,7 +17,7 @@ export async function GET(
       gen_percentage: null,
     });
   }
-  const data = await res.json();
 
+  const data = await res.json();
   return NextResponse.json(data);
 }
