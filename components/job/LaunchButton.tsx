@@ -1,4 +1,5 @@
 "use client";
+import { setJob } from "@/utils/localStorage";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
 
@@ -27,6 +28,13 @@ const LaunchButton = (props: propsType) => {
     const data = await res.json();
 
     if (data.id) {
+      // set localStorage
+      setJob(data.id, {
+        message: data.message,
+        gen_percentage: null,
+      });
+
+      // dispatch Toast
       toast({
         title: "Job Launched!",
         description: `The deepfake analysis should be done in a few minutes...`,
