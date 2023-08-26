@@ -43,29 +43,33 @@ export default function Jobs() {
       {jobIds.map((jobID, index) => {
         const job: JobOutput = jobs[jobID];
         const genPercentage = job.gen_percentage;
-        let color = "slate";
+        let color = "bg-slate-500";
         if (genPercentage) {
           color =
             genPercentage < 0.5
-              ? "green"
+              ? "bg-green-600"
               : genPercentage < 0.8
-              ? "yellow"
-              : "red";
+              ? "bg-yellow-500"
+              : "bg-red-500";
         }
         return (
           <Card
             key={index}
-            className={`flex flex-col justify-center m-12 bg-${color}-500`}
+            className={`flex flex-col justify-center m-12 ${color}`}
           >
             <CardHeader>
-              <CardTitle>
-                Speech Analysis Job{" "}
-                <Badge>
-                  <b>Status:</b> {genPercentage ? "Completed" : "Waiting"}{" "}
+              <CardTitle>Speech Analysis Job</CardTitle>
+              <CardDescription className="text-slate-200 gap-2 flex flex-row justify-normal">
+                <Badge
+                  className={`${
+                    genPercentage ? "bg-green-200" : "bg-slate-400"
+                  }`}
+                >
+                  {genPercentage ? "Completed" : "Waiting"}{" "}
                 </Badge>
-              </CardTitle>
-              <CardDescription className="text-slate-200">
-                Click button below to check status of job manually.
+                {genPercentage == null && (
+                  <p>Click button below to check status of job manually.</p>
+                )}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -76,8 +80,10 @@ export default function Jobs() {
                 </p>
               ) : (
                 <div>
-                  It takes a few minutes for a speech analysis job to complete.
-                  Click to check if it has finished.
+                  <p className="mb-2">
+                    It takes a few minutes for a speech analysis job to
+                    complete. Click to check if it has finished.
+                  </p>
                   <Button onClick={() => onStatusClick(jobID)}>
                     Check Job Status{" "}
                     {loading && <Loader2 className="animate-spin" />}
@@ -86,7 +92,7 @@ export default function Jobs() {
               )}
             </CardContent>
             <CardFooter className="gap-2">
-              <Badge>DeepTruth Alpha</Badge>
+              <Badge variant={"outline"}>DeepTruth Alpha</Badge>
               {/* <Badge>Model: deeptruth-{modelType}</Badge> */}
             </CardFooter>
           </Card>
