@@ -14,8 +14,8 @@ const FileUpload = () => {
     <div className="flex flex-col gap-6">
       <div>
         <Label htmlFor="audioFile">Upload .wav audio file</Label>
-        <div id="audioFile" className="grid grid-cols-10 gap-3 pt-2">
-          <div className="col-span-6">
+        <div id="audioFile" className="grid grid-cols-4 gap-3 pt-2">
+          <div className="col-span-3">
             <Input
               type="file"
               onChange={(e) => e.target.files && setFile(e.target.files[0])}
