@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const response = await axios.post(url, reqFormData, config).then((res) => {
-      return res.data.embeddings;
+      return res.data;
     });
     return NextResponse.json(response);
   } catch (err) {
