@@ -1,17 +1,17 @@
 import { JobOutput } from "@/types/job";
 
 const setJob = (id: string, data: JobOutput): void => {
-  const jobs = _getJobs();
+  const jobs = getJobs();
   jobs[id] = data;
   localStorage.setItem("dtJobs", JSON.stringify(jobs));
 };
 
 const getJob = (id: string): JobOutput | null => {
-  const jobs = _getJobs();
+  const jobs = getJobs();
   return jobs[id] || null;
 };
 
-const _getJobs = () => {
+const getJobs = () => {
   let lsJobs = localStorage.getItem("dtJobs");
   let jobs;
   if (!lsJobs) {
@@ -22,4 +22,4 @@ const _getJobs = () => {
   return jobs;
 };
 
-export { setJob, getJob };
+export { setJob, getJob, getJobs };
