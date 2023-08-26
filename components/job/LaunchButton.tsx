@@ -3,11 +3,13 @@ import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
 
 type propsType = {
-  file?: File;
+  file?: File | null;
 };
 
 const LaunchButton = (props: propsType) => {
   const { file } = props;
+  // launch toast
+  const { toast } = useToast();
 
   const launchJob = async () => {
     if (!file) return;
@@ -24,15 +26,15 @@ const LaunchButton = (props: propsType) => {
     const res = await fetch(url, options);
     const data = await res.json();
 
-    // launch toast
-    const { toast } = useToast();
-
-    toast({
-      title: "Job Launched!",
-      description: `The deepfake analysis should be done in a few minutes...`,
-    });
-
-    return data;
+    if (data.id) {
+      toast({
+        title: "Job Launched!",
+        description: `The deepfake analysis should be done in a few minutes...`,
+      });
+    } else {
+      // TODO: Add setErrMsg here
+      console.error("Launch failed");
+    }
   };
 
   return (
