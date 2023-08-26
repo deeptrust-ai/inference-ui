@@ -6,7 +6,6 @@ export async function GET(
   request: NextRequest,
   { params }: { params: paramsType }
 ) {
-  console.log("here");
   const { id } = params;
   const url = apiURLPrefix + `job/${id}`;
 
