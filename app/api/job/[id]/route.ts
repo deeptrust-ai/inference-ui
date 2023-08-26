@@ -1,7 +1,10 @@
-import apiURLPrefix from "@/utils/url";
 import { NextRequest, NextResponse } from "next/server";
 
+import { JobOutput } from "@/types/job";
+import apiURLPrefix from "@/utils/url";
+
 type paramsType = { id: string };
+
 export async function GET(
   request: NextRequest,
   { params }: { params: paramsType }
@@ -11,12 +14,13 @@ export async function GET(
 
   const res = await fetch(url);
   if (res.status == 202) {
-    return NextResponse.json({
+    const output: JobOutput = {
       message: "Job not finished.",
       gen_percentage: null,
-    });
+    };
+    return NextResponse.json(output);
   }
 
-  const data = await res.json();
+  const data: JobOutput = await res.json();
   return NextResponse.json(data);
 }
