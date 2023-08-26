@@ -3,4 +3,8 @@ interface JobOutput {
   gen_percentage: number | null;
 }
 
-export { JobOutput };
+interface JobOutputs {
+  [key: string]: JobOutput;
+}
+
+export { JobOutput, JobOutputs };
