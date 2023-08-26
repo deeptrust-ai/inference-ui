@@ -6,7 +6,7 @@ import Jobs from "@/components/job/Jobs";
 export default function Input() {
   return (
     <div className="flex flex-col gap-4">
-      <FileUpload />
+      <FileUpload /> {/* TODO: Add URL input (file vs URL) */}
       <Jobs />
     </div>
   );
