@@ -22,4 +22,6 @@ const getJobs = () => {
   return jobs;
 };
 
-export { setJob, getJob, getJobs };
+const clearJobs = () => localStorage.setItem("dtJobs", JSON.stringify({}));
+
+export { getJob, getJobs, setJob, clearJobs };
