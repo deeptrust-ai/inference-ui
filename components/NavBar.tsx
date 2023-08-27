@@ -17,7 +17,7 @@ import {
 // TODO: Add trigger logic for any trigger navbar menu items
 const navBarContent: { title: string; link?: string; trigger?: boolean }[] = [
   { title: "Home", link: "/" },
-  { title: "Demo", link: "/demo" },
+  { title: "App", link: "/app" },
 ];
 
 const genLink = (title: string, link: string) => (
@@ -33,7 +33,9 @@ export default function NavBar() {
     <NavigationMenu className="p-6">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <DLogo width={100} height={24} />
+          <Link href={"/"}>
+            <DLogo width={100} height={24} />
+          </Link>
         </NavigationMenuItem>
         {navBarContent.map((item) => (
           <NavigationMenuItem key={item.title}>
