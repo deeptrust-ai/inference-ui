@@ -1,11 +1,17 @@
 "use client";
-import { setJob } from "@/utils/localStorage";
+import { useState } from "react";
+
+// ui
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
+
+import { setJob } from "@/utils/localStorage";
 import { JobInputProps, JobOutput, JobOutputs } from "@/types/job";
+import { Loader2 } from "lucide-react";
 
 const LaunchButton = (props: JobInputProps) => {
-  const { file, setJobsState, jobs } = props;
+  const { file, setJobsState } = props;
+  const [loading, setLoading] = useState<boolean>(false);
   // launch toast
   const { toast } = useToast();
 
@@ -21,6 +27,7 @@ const LaunchButton = (props: JobInputProps) => {
       method: "POST",
       body,
     };
+    setLoading(true);
     const res = await fetch(url, options);
     const data = await res.json();
 
@@ -47,11 +54,14 @@ const LaunchButton = (props: JobInputProps) => {
       // TODO: Add setErrMsg here
       console.error("Launch failed");
     }
+    setLoading(false);
   };
 
   return (
-    <Button onClick={launchJob} disabled={!file}>
-      Launch
+    <Button onClick={launchJob} disabled={!file || loading}>
+      <div className="flex flex-row gap-2 items-center">
+        Launch {loading && <Loader2 className="animate-spin" />}
+      </div>
     </Button>
   );
 };
