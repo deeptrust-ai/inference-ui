@@ -1,7 +1,7 @@
 import { JobOutput } from "@/types/job";
 
 const setJob = (id: string, data: JobOutput): void => {
-  const jobs = getJobs();
+  const jobs = { ...getJobs() };
   jobs[id] = data;
   localStorage.setItem("dtJobs", JSON.stringify(jobs));
 };
