@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // shadcn
 import { Badge } from "@/components/ui/badge";
@@ -42,6 +42,21 @@ const JobCard = (props: jobCardType) => {
   let { index, job: defaultJob, jobID } = props;
   const [loading, setLoading] = useState<boolean>(false);
   const [job, setJobState] = useState<JobOutput>(defaultJob);
+
+  useEffect(() => {
+    const pollJob = async () => {
+      setLoading(true);
+      const pollResult = await fetch(`/api/job/${jobID}`);
+      const newJob = await pollResult.json();
+      if (newJob.gen_percentage != null) {
+        setJobLS(jobID, newJob);
+        setJobState(newJob);
+      }
+      setLoading(false);
+    };
+
+    pollJob();
+  }, []);
 
   const onStatusClick = async () => {
     setLoading(true);
