@@ -31,7 +31,7 @@ const OptionsDropDown = (props: JobInputProps) => {
   return (
     <DropdownMenu>
       {/* Trigger */}
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button variant={"outline"}>
           <MoreHorizontal />
         </Button>
