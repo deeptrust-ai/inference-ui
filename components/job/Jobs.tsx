@@ -16,11 +16,11 @@ import {
 import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
 
 // types
-import { JobOutput, JobOutputs } from "@/types/job";
+import { JobOutput, JobInputProps } from "@/types/job";
 import { RotateCw } from "lucide-react";
 
-export default function Jobs() {
-  const jobs = getJobsLS();
+export default function Jobs(props: JobInputProps) {
+  const { jobs } = props;
   const jobIds = Object.keys(jobs);
 
   return (

@@ -7,4 +7,10 @@ interface JobOutputs {
   [key: string]: JobOutput;
 }
 
-export { JobOutput, JobOutputs };
+type JobInputProps = {
+  jobs: JobOutputs;
+  setJobsState: Dispatch<SetStateAction<JobOutputs>>;
+  file?: File | null;
+};
+
+export type { JobOutput, JobOutputs, JobInputProps };

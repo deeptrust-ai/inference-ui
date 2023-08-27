@@ -2,13 +2,10 @@
 import { setJob } from "@/utils/localStorage";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
+import { JobInputProps, JobOutput, JobOutputs } from "@/types/job";
 
-type propsType = {
-  file?: File | null;
-};
-
-const LaunchButton = (props: propsType) => {
-  const { file } = props;
+const LaunchButton = (props: JobInputProps) => {
+  const { file, setJobsState, jobs } = props;
   // launch toast
   const { toast } = useToast();
 
@@ -28,11 +25,18 @@ const LaunchButton = (props: propsType) => {
     const data = await res.json();
 
     if (data.id) {
-      // set localStorage
-      setJob(data.id, {
+      const job: JobOutput = {
         message: data.message,
         gen_percentage: null,
-      });
+      };
+      // set localStorage
+      setJob(data.id, job);
+
+      const updatedValue = { [data.id]: job };
+      setJobsState((currentJobs: JobOutputs) => ({
+        ...currentJobs,
+        ...updatedValue,
+      }));
 
       // dispatch Toast
       toast({

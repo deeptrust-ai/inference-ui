@@ -6,8 +6,9 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import LaunchButton from "./LaunchButton";
+import { JobInputProps } from "@/types/job";
 
-const FileUpload = () => {
+const FileUpload = (props: JobInputProps) => {
   //   const [modelType, setModelType] = useState<string>("ss");
   const [file, setFile] = useState<File | null>();
   return (
@@ -21,7 +22,7 @@ const FileUpload = () => {
               onChange={(e) => e.target.files && setFile(e.target.files[0])}
             />
           </div>
-          <LaunchButton file={file} />
+          <LaunchButton file={file} {...props} />
           {/* <ModelDropdown modelType={modelType} setModelType={setModelType} /> */}
         </div>
       </div>
