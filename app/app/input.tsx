@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import FileUpload from "@/components/job/FileUpload";
 import Jobs from "@/components/job/Jobs";
@@ -7,8 +7,11 @@ import { getJobs } from "@/utils/localStorage";
 import { JobInputProps, JobOutputs } from "@/types/job";
 
 export default function Input() {
-  const defaultJobs = getJobs();
-  const [jobs, setJobsState] = useState<JobOutputs>(defaultJobs);
+  const [jobs, setJobsState] = useState<JobOutputs>({});
+
+  useEffect(() => {
+    setJobsState(getJobs());
+  }, []);
 
   const props: JobInputProps = {
     jobs,
