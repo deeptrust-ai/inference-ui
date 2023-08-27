@@ -9,8 +9,8 @@ import { setJob } from "@/utils/localStorage";
 import { JobInputProps, JobOutput, JobOutputs } from "@/types/job";
 import { Loader2 } from "lucide-react";
 
-const LaunchButton = (props: JobInputProps) => {
-  const { file, setJobsState } = props;
+const LaunchButton = (props: JobInputProps & { className: string }) => {
+  const { className, file, setJobsState } = props;
   const [loading, setLoading] = useState<boolean>(false);
   // launch toast
   const { toast } = useToast();
@@ -58,7 +58,11 @@ const LaunchButton = (props: JobInputProps) => {
   };
 
   return (
-    <Button onClick={launchJob} disabled={!file || loading}>
+    <Button
+      className={className}
+      onClick={launchJob}
+      disabled={!file || loading}
+    >
       <div className="flex flex-row gap-2 items-center">
         Launch {loading && <Loader2 className="animate-spin" />}
       </div>
