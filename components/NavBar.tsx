@@ -17,7 +17,7 @@ import {
 // TODO: Add trigger logic for any trigger navbar menu items
 const navBarContent: { title: string; link?: string; trigger?: boolean }[] = [
   { title: "Home", link: "/" },
-  { title: "App", link: "/app" },
+  { title: "Speech Detection", link: "/app" },
 ];
 
 const genLink = (title: string, link: string) => (
