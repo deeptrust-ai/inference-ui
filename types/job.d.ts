@@ -10,7 +10,9 @@ interface JobOutputs {
 type JobInputProps = {
   jobs: JobOutputs;
   setJobsState: Dispatch<SetStateAction<JobOutputs>>;
-  file?: File | null;
+  type: "file" | "url" | "tweet";
+  input: File | string | null;
+  setInput: Dispatch<SetStateAction<JobInputProps["input"]>>;
 };
 
 export type { JobOutput, JobOutputs, JobInputProps };

@@ -1,46 +1,66 @@
 "use client";
 // react
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 
 // shadcn
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { AlertCircle } from "lucide-react";
-
+// components
 import LaunchButton from "./LaunchButton";
 import OptionsDropDown from "./OptionsDropdown";
+import ErrorAlert from "../ErrorAlert";
 
+// types
 import { JobInputProps } from "@/types/job";
 
-const FileUpload = (props: JobInputProps) => {
-  //   const [modelType, setModelType] = useState<string>("ss");
-  const [file, setFile] = useState<File | null>();
+const JobInput = (props: JobInputProps) => {
   const [error, setError] = useState<string | null>(null);
 
+  const { input, setInput, type } = props;
+
   const handleInput = (e: any) => {
+    if (type == "file") {
+      return handleFileInput(e);
+    }
+
+    return handleURLInput(e);
+  };
+
+  const handleFileInput = (e: any) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (file.type == "audio/wav") {
-        setFile(file);
+        setInput(file);
         setError(null);
       } else {
         setError("DeepTrust only supports wavfiles at the moment.");
-        setFile(null);
+        setInput(null);
       }
     }
   };
 
+  const handleURLInput = (e: any) => {
+    console.log(e);
+  };
+
+  const labelOptions = {
+    file: "Upload .wav audio file",
+    url: "Submit URL for analysis",
+    tweet: "Submit Tweet URL for analysis",
+  };
+
+  const label = labelOptions[props.type];
+
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Label htmlFor="audioFile">Upload .wav audio file</Label>
+        <Label htmlFor="audioFile">{label}</Label>
         <div id="audioFile" className="grid grid-cols-10 gap-3 pt-2">
           <div className="col-span-7">
-            <Input type="file" onChange={handleInput} />
+            <Input type={props.type} onChange={handleInput} />
           </div>
-          <LaunchButton className="col-span-2" file={file} {...props} />
+          <LaunchButton className="col-span-2" {...props} />
           <OptionsDropDown {...props} />
         </div>
       </div>
@@ -49,17 +69,4 @@ const FileUpload = (props: JobInputProps) => {
   );
 };
 
-const ErrorAlert = ({ msg }: { msg: string }) => {
-  console.log("here");
-  return (
-    <div>
-      <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Error</AlertTitle>
-        <AlertDescription>{msg}</AlertDescription>
-      </Alert>
-    </div>
-  );
-};
-
-export default FileUpload;
+export default JobInput;

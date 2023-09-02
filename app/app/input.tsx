@@ -6,21 +6,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { FolderUp, TwitterIcon } from "lucide-react";
 
-import FileUpload from "@/components/job/FileUpload";
+// components
 import Jobs from "@/components/job/Jobs";
-import { getJobs } from "@/utils/localStorage";
-import { JobInputProps, JobOutputs } from "@/types/job";
+import JobInput from "@/components/job/JobInput";
 import { Label } from "@/components/ui/label";
+
+// utils
+import { getJobs } from "@/utils/localStorage";
+
+// types
+import { JobInputProps, JobOutputs } from "@/types/job";
 
 export default function Input() {
   const [jobs, setJobsState] = useState<JobOutputs>({});
-  const [inputType, setInputType] = useState<string>("file");
+  const [input, setInput] = useState<JobInputProps["input"]>(null);
+  const [type, setType] = useState<JobInputProps["type"]>("file");
 
   useEffect(() => {
     setJobsState(getJobs());
   }, []);
 
   const props: JobInputProps = {
+    type,
+    input,
+    setInput,
     jobs,
     setJobsState,
   };
@@ -29,19 +38,26 @@ export default function Input() {
     <div className="flex flex-col gap-4">
       {/* Choose Input Type */}
       <Label htmlFor="tabs">Choose Input Type</Label>
-      <Tabs id="tabs" defaultValue={inputType} className="pb-6">
+      <Tabs
+        id="tabs"
+        defaultValue={type}
+        className="pb-6"
+        onValueChange={(val: any) => setType(val)}
+      >
         <TabsList className="mb-12">
           <TabsTrigger value="file" className="flex gap-3">
             File <FolderUp />
           </TabsTrigger>
-          <TabsTrigger value="twitter" className="flex gap-3">
+          <TabsTrigger value="tweet" className="flex gap-3">
             Twitter <TwitterIcon />
           </TabsTrigger>
         </TabsList>
         <TabsContent value="file">
-          <FileUpload {...props} /> {/* TODO: Add URL input (file vs URL) */}
+          <JobInput {...props} />
         </TabsContent>
-        <TabsContent value="twitter">Change your password here.</TabsContent>
+        <TabsContent value="tweet">
+          <JobInput {...props} />
+        </TabsContent>
       </Tabs>
       {/* List of Jobs */}
       <Jobs {...props} />
