@@ -1,8 +1,8 @@
-import { JobOutput } from "@/types/job";
+import { JobOutput, JobType } from "@/types/job";
 
-const setJob = (id: string, data: JobOutput): void => {
+const setJob = (id: string, data: JobOutput, type: JobType): void => {
   const jobs = { ...getJobs() };
-  jobs[id] = data;
+  jobs[id] = { ...data, type };
   localStorage.setItem("dtJobs", JSON.stringify(jobs));
 };
 
