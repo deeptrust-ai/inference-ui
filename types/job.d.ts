@@ -8,12 +8,14 @@ interface JobOutputs {
   [key: string]: JobOutput;
 }
 
+type JobType = "file" | "url" | "tweet";
+
 type JobInputProps = {
   jobs: JobOutputs;
   setJobsState: Dispatch<SetStateAction<JobOutputs>>;
-  type: "file" | "url" | "tweet";
+  type: JobType;
   input: File | string | null;
   setInput: Dispatch<SetStateAction<JobInputProps["input"]>>;
 };
 
-export type { JobOutput, JobOutputs, JobInputProps };
+export type { JobOutput, JobType, JobOutputs, JobInputProps };

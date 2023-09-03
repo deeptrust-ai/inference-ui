@@ -15,12 +15,12 @@ import { Label } from "@/components/ui/label";
 import { getJobs } from "@/utils/localStorage";
 
 // types
-import { JobInputProps, JobOutputs } from "@/types/job";
+import { JobInputProps, JobOutputs, JobType } from "@/types/job";
 
 export default function Input() {
   const [jobs, setJobsState] = useState<JobOutputs>({});
   const [input, setInput] = useState<JobInputProps["input"]>(null);
-  const [type, setType] = useState<JobInputProps["type"]>("file");
+  const [type, setType] = useState<JobType>("file");
 
   useEffect(() => {
     setJobsState(getJobs());
