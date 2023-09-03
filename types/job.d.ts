@@ -1,6 +1,7 @@
 interface JobOutput {
   message: string;
-  gen_percentage: number | null;
+  score?: number | null;
+  scores?: number[] | null;
 }
 
 interface JobOutputs {
