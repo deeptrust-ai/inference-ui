@@ -36,3 +36,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.error();
   }
 }
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const audioURL = searchParams.get("url");
+
+  if (audioURL == null) {
+    console.error("'url' param was not found");
+    return NextResponse.error();
+  }
+
+  const url = apiURLPrefix + "twitter/job?url=" + audioURL;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  return NextResponse.json(data);
+}
