@@ -20,14 +20,12 @@ import { JobInputProps, JobOutputs, JobType } from "@/types/job";
 export default function Input() {
   const [jobs, setJobsState] = useState<JobOutputs>({});
   const [input, setInput] = useState<JobInputProps["input"]>(null);
-  const [type, setType] = useState<JobType>("file");
 
   useEffect(() => {
     setJobsState(getJobs());
   }, []);
 
   const props: JobInputProps = {
-    type,
     input,
     setInput,
     jobs,
@@ -38,12 +36,7 @@ export default function Input() {
     <div className="flex flex-col gap-4">
       {/* Choose Input Type */}
       <Label htmlFor="tabs">Choose Input Type</Label>
-      <Tabs
-        id="tabs"
-        defaultValue={type}
-        className="pb-6"
-        onValueChange={(val: any) => setType(val)}
-      >
+      <Tabs id="tabs" defaultValue="file" className="pb-6">
         <TabsList className="mb-12">
           <TabsTrigger value="file" className="flex gap-3">
             File <FolderUp />
@@ -53,10 +46,10 @@ export default function Input() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="file">
-          <JobInput {...props} />
+          <JobInput {...props} type="file" />
         </TabsContent>
         <TabsContent value="tweet">
-          <JobInput {...props} />
+          <JobInput {...props} type="tweet" />
         </TabsContent>
       </Tabs>
       {/* List of Jobs */}
