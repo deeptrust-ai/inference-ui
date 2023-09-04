@@ -1,5 +1,8 @@
+type JobType = "file" | "url" | "tweet";
+
 interface JobOutput {
   message: string;
+  type?: JobType;
   score?: number | null;
   scores?: number[] | null;
 }
@@ -7,8 +10,6 @@ interface JobOutput {
 interface JobOutputs {
   [key: string]: JobOutput;
 }
-
-type JobType = "file" | "url" | "tweet";
 
 type JobInputProps = {
   jobs: JobOutputs;
