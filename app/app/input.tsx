@@ -36,7 +36,12 @@ export default function Input() {
     <div className="flex flex-col gap-4">
       {/* Choose Input Type */}
       <Label htmlFor="tabs">Choose Input Type</Label>
-      <Tabs id="tabs" defaultValue="file" className="pb-6">
+      <Tabs
+        id="tabs"
+        defaultValue="file"
+        className="pb-6"
+        onValueChange={() => setInput(null)}
+      >
         <TabsList className="mb-12">
           <TabsTrigger value="file" className="flex gap-3">
             File <FolderUp />

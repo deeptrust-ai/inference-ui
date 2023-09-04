@@ -17,7 +17,7 @@ import { JobInputProps } from "@/types/job";
 const JobInput = (props: JobInputProps) => {
   const [error, setError] = useState<string | null>(null);
 
-  const { input, setInput, type } = props;
+  const { setInput, type } = props;
 
   const handleInput = (e: any) => {
     if (type == "file") {
@@ -40,9 +40,7 @@ const JobInput = (props: JobInputProps) => {
     }
   };
 
-  const handleURLInput = (e: any) => {
-    console.log(e);
-  };
+  const handleURLInput = (e: any) => setInput(e.target.value);
 
   const labelOptions = {
     file: "Upload .wav audio file",
@@ -50,7 +48,8 @@ const JobInput = (props: JobInputProps) => {
     tweet: "Submit Tweet URL for analysis",
   };
 
-  const label = labelOptions[props.type];
+  if (!type) return;
+  const label = labelOptions[type];
 
   return (
     <div className="flex flex-col gap-6">
