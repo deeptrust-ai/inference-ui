@@ -14,7 +14,7 @@ interface JobOutputs {
 type JobInputProps = {
   jobs: JobOutputs;
   setJobsState: Dispatch<SetStateAction<JobOutputs>>;
-  type: JobType;
+  type?: JobType;
   input: File | string | null;
   setInput: Dispatch<SetStateAction<JobInputProps["input"]>>;
 };
