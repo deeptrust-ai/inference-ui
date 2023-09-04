@@ -28,9 +28,10 @@ const LaunchButton = (props: JobInputProps & { className: string }) => {
     if (data.id) {
       const job: JobOutput = {
         message: data.message,
+        type,
       };
       // set localStorage
-      setJob(data.id, job, type);
+      setJob(data.id, job);
 
       const updatedValue = { [data.id]: job };
       setJobsState((currentJobs: JobOutputs) => ({
