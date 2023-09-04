@@ -56,7 +56,7 @@ const JobCard = (props: JobCardProps) => {
     };
 
     pollJob();
-  }, []);
+  }, [jobID]);
 
   const onStatusClick = async () => {
     setLoading(true);
@@ -102,7 +102,9 @@ const JobCard = (props: JobCardProps) => {
           </p>
           <div className="flex">
             {scores.map((score, i) => (
-              <Badge className={colors[i]}>{resultMsgs[i]}</Badge>
+              <Badge key={i} className={colors[i]}>
+                {resultMsgs[i]}
+              </Badge>
             ))}
           </div>
         </CardContent>
