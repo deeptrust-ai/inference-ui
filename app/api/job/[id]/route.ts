@@ -16,7 +16,7 @@ export async function GET(
   if (res.status == 202) {
     const output: JobOutput = {
       message: "Job not finished.",
-      gen_percentage: null,
+      score: null,
     };
     return NextResponse.json(output);
   }
