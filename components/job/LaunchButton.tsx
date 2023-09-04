@@ -10,31 +10,25 @@ import { JobInputProps, JobOutput, JobOutputs } from "@/types/job";
 import { Loader2 } from "lucide-react";
 
 const LaunchButton = (props: JobInputProps & { className: string }) => {
-  const { className, file, setJobsState } = props;
+  const { className, type, setJobsState, input } = props;
   const [loading, setLoading] = useState<boolean>(false);
   // launch toast
   const { toast } = useToast();
 
   const launchJob = async () => {
-    if (!file) return;
-    const body = new FormData();
-    body.append("file", file);
-    body.append("fileName", file.name);
-    body.append("modelType", "ss");
+    if (!type) return;
+    let launcher = launchJobURL;
+    if (type == "file") {
+      launcher = launchJobFile;
+    }
 
-    const url = "/api/job";
-    const options = {
-      method: "POST",
-      body,
-    };
     setLoading(true);
-    const res = await fetch(url, options);
-    const data = await res.json();
+    const data = await launcher();
 
     if (data.id) {
       const job: JobOutput = {
         message: data.message,
-        gen_percentage: null,
+        type,
       };
       // set localStorage
       setJob(data.id, job);
@@ -57,11 +51,39 @@ const LaunchButton = (props: JobInputProps & { className: string }) => {
     setLoading(false);
   };
 
+  const launchJobFile = async () => {
+    if (!(input instanceof File)) return;
+    const body = new FormData();
+    body.append("file", input);
+    body.append("fileName", input.name);
+    // TODO: Add modelType prop
+    body.append("modelType", "ss");
+    const url = "/api/job";
+    const options = {
+      method: "POST",
+      body,
+    };
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    return data;
+  };
+
+  const launchJobURL = async () => {
+    if (input == null) return;
+    // TODO: Add non-twitter URLs
+    const url = `/api/job?url=${input}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    return data;
+  };
+
   return (
     <Button
       className={className}
       onClick={launchJob}
-      disabled={!file || loading}
+      disabled={!input || loading}
     >
       <div className="flex flex-row gap-2 items-center">
         Launch {loading && <Loader2 className="animate-spin" />}

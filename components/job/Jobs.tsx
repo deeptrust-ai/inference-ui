@@ -32,13 +32,13 @@ export default function Jobs(props: JobInputProps) {
   );
 }
 
-type jobCardType = {
+type JobCardProps = {
   index: number;
   job: JobOutput;
   jobID: string;
 };
 
-const JobCard = (props: jobCardType) => {
+const JobCard = (props: JobCardProps) => {
   let { index, job: defaultJob, jobID } = props;
   const [loading, setLoading] = useState<boolean>(false);
   const [job, setJobState] = useState<JobOutput>(defaultJob);
@@ -56,7 +56,7 @@ const JobCard = (props: jobCardType) => {
     };
 
     pollJob();
-  }, []);
+  }, [jobID]);
 
   const onStatusClick = async () => {
     setLoading(true);
@@ -68,69 +68,116 @@ const JobCard = (props: jobCardType) => {
     setLoading(false);
   };
 
-  const genPercentage = job.gen_percentage;
+  if (job.scores && job.scores.length > 1) {
+    const { scores } = job;
+    const colors: string[] = [];
+    const resultMsgs: string[] = [];
+    scores.forEach((score) => {
+      const [color, resultMsg] = scoreChecker(score);
+      colors.push(color);
+      resultMsgs.push(resultMsg);
+    });
 
-  let color = "bg-slate-500";
-  let alert = null;
-  if (genPercentage) {
-    if (genPercentage < 0.5) {
-      color = "bg-green-600";
-      alert = "No generated speech found!";
-    } else if (genPercentage < 0.8) {
-      color = "bg-yellow-500";
-      alert = "Be Cautious. Very likely generated speech.";
-    } else {
-      color = "bg-red-400 border-white";
-      alert = "Generated speech detected!";
+    return (
+      <Card
+        key={index}
+        className={`flex flex-col justify-center m-6 bg-slate-500`}
+      >
+        <CardHeader>
+          <CardTitle className="flex flex-row justify-between items-center pb-2">
+            <div className="flex gap-2">
+              {" "}
+              <Badge>{index}</Badge>
+              Speech Analysis Job
+            </div>
+          </CardTitle>
+          <CardDescription className="text-slate-200 gap-2 flex flex-row justify-normal">
+            <Badge className="bg-green-200">Completed</Badge>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>
+            This job had a total of {scores.length} videos to analyze. According
+            to deeptruth, this was the outcome.
+          </p>
+          <div className="flex">
+            {scores.map((score, i) => (
+              <Badge key={i} className={colors[i]}>
+                {resultMsgs[i]}
+              </Badge>
+            ))}
+          </div>
+        </CardContent>
+        <CardFooter className="gap-2">
+          <Badge variant={"outline"}>DeepTruth Alpha</Badge>
+        </CardFooter>
+      </Card>
+    );
+  } else {
+    // single score
+    let { score } = job;
+    if (score == null && job.scores) {
+      score = job.scores[0];
     }
+
+    let color = "bg-slate-500";
+    let resultMsg = null;
+    if (score) {
+      [color, resultMsg] = scoreChecker(score);
+    }
+
+    return (
+      <Card key={index} className={`flex flex-col justify-center m-6 ${color}`}>
+        <CardHeader>
+          <CardTitle className="flex flex-row justify-between items-center pb-2">
+            <div className="flex gap-2">
+              {" "}
+              <Badge>{index}</Badge>
+              Speech Analysis Job
+            </div>
+            {score == null && (
+              <RotateCw
+                onClick={onStatusClick}
+                className={`${loading && "animate-spin"}`}
+              />
+            )}
+          </CardTitle>
+          <CardDescription className="text-slate-200 gap-2 flex flex-row justify-normal">
+            <Badge className={`${score ? "bg-green-200" : "bg-slate-400"}`}>
+              {score ? "Completed" : "Waiting"}{" "}
+            </Badge>
+            {score ? null : (
+              <div className="flex flex-row items-center gap-2">
+                Click <RotateCw size={14} /> button to check status of job
+                manually.
+              </div>
+            )}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {score ? <p>{resultMsg}</p> : <p>Waiting for job to complete...</p>}
+        </CardContent>
+        <CardFooter className="gap-2">
+          <Badge variant={"outline"}>DeepTruth Alpha</Badge>
+        </CardFooter>
+      </Card>
+    );
+  }
+};
+
+const scoreChecker = (score: number): [string, string] => {
+  let color;
+  let resultMsg;
+  if (score < 0.6) {
+    color = "bg-green-600";
+    resultMsg = "No generated speech found!";
+  } else if (score < 0.8) {
+    color = "bg-yellow-500";
+    resultMsg = "Be Cautious. Catching patterns of generated speech.";
+  } else {
+    color = "bg-red-400 border-white";
+    resultMsg = "Generated speech detected!";
   }
 
-  return (
-    <Card key={index} className={`flex flex-col justify-center m-6 ${color}`}>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between items-center pb-2">
-          <div className="flex gap-2">
-            {" "}
-            <Badge>{index}</Badge>
-            Speech Analysis Job
-          </div>
-          {genPercentage == null && (
-            <RotateCw
-              onClick={onStatusClick}
-              className={`${loading && "animate-spin"}`}
-            />
-          )}
-        </CardTitle>
-        <CardDescription className="text-slate-200 gap-2 flex flex-row justify-normal">
-          <Badge
-            className={`${genPercentage ? "bg-green-200" : "bg-slate-400"}`}
-          >
-            {genPercentage ? "Completed" : "Waiting"}{" "}
-          </Badge>
-          {genPercentage ? (
-            <div>{alert}</div>
-          ) : (
-            <div className="flex flex-row items-center gap-2">
-              Click <RotateCw size={14} /> button to check status of job
-              manually.
-            </div>
-          )}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {genPercentage ? (
-          <p>
-            According to deeptruth, this audio has a{" "}
-            <b>{genPercentage * 100}%</b> of being being generated.
-          </p>
-        ) : (
-          <p>Waiting for job to complete...</p>
-        )}
-      </CardContent>
-      <CardFooter className="gap-2">
-        <Badge variant={"outline"}>DeepTruth Alpha</Badge>
-        {/* <Badge>Model: deeptruth-{modelType}</Badge> */}
-      </CardFooter>
-    </Card>
-  );
+  return [color, resultMsg];
 };

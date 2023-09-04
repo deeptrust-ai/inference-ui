@@ -1,6 +1,10 @@
+type JobType = "file" | "url" | "tweet";
+
 interface JobOutput {
   message: string;
-  gen_percentage: number | null;
+  type?: JobType;
+  score?: number | null;
+  scores?: number[] | null;
 }
 
 interface JobOutputs {
@@ -10,7 +14,9 @@ interface JobOutputs {
 type JobInputProps = {
   jobs: JobOutputs;
   setJobsState: Dispatch<SetStateAction<JobOutputs>>;
-  file?: File | null;
+  type?: JobType;
+  input: File | string | null;
+  setInput: Dispatch<SetStateAction<JobInputProps["input"]>>;
 };
 
-export type { JobOutput, JobOutputs, JobInputProps };
+export type { JobOutput, JobType, JobOutputs, JobInputProps };
