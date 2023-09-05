@@ -16,6 +16,7 @@ import { getJobs } from "@/utils/localStorage";
 
 // types
 import { JobInputProps, JobOutputs, JobType } from "@/types/job";
+import HowTo from "@/components/job/HowTo";
 
 export default function Input() {
   const [jobs, setJobsState] = useState<JobOutputs>({});
@@ -45,7 +46,7 @@ export default function Input() {
         <TabsList className="mb-12">
           {/* Triggers */}
           <TabsTrigger value="tweet" className="flex gap-3">
-            𝕏 / Twitter <TwitterIcon />
+            𝕏 /Twitter <TwitterIcon />
           </TabsTrigger>
           <TabsTrigger value="file" className="flex gap-3">
             File <FolderUp />
@@ -53,6 +54,7 @@ export default function Input() {
         </TabsList>
         {/* Content */}
         <TabsContent value="tweet">
+          <HowTo type="tweet" />
           <JobInput {...props} type="tweet" />
         </TabsContent>
         <TabsContent value="file">
