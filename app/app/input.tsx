@@ -43,18 +43,20 @@ export default function Input() {
         onValueChange={() => setInput(null)}
       >
         <TabsList className="mb-12">
+          {/* Triggers */}
           <TabsTrigger value="tweet" className="flex gap-3">
-            Twitter <TwitterIcon />
+            𝕏 / Twitter <TwitterIcon />
           </TabsTrigger>
           <TabsTrigger value="file" className="flex gap-3">
             File <FolderUp />
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="file">
-          <JobInput {...props} type="file" />
-        </TabsContent>
+        {/* Content */}
         <TabsContent value="tweet">
           <JobInput {...props} type="tweet" />
+        </TabsContent>
+        <TabsContent value="file">
+          <JobInput {...props} type="file" />
         </TabsContent>
       </Tabs>
       {/* List of Jobs */}
