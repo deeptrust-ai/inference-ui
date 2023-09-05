@@ -12,6 +12,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+// other
+import TimeAgo from "react-timeago";
+
 // utils
 import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
 
@@ -42,6 +45,7 @@ const JobCard = (props: JobCardProps) => {
   let { index, job: defaultJob, jobID } = props;
   const [loading, setLoading] = useState<boolean>(false);
   const [job, setJobState] = useState<JobOutput>(defaultJob);
+  const [timeAgo, setTimeAgo] = useState<Date>();
 
   useEffect(() => {
     const pollJob = async () => {
@@ -59,6 +63,7 @@ const JobCard = (props: JobCardProps) => {
   }, [jobID]);
 
   const onStatusClick = async () => {
+    setTimeAgo(new Date());
     setLoading(true);
     const status = await fetch(`/api/job/${jobID}`);
     const newJob = await status.json();
@@ -78,6 +83,7 @@ const JobCard = (props: JobCardProps) => {
       resultMsgs.push(resultMsg);
     });
 
+    // TODO: Create one Card component
     return (
       <Card
         key={index}
@@ -146,7 +152,11 @@ const JobCard = (props: JobCardProps) => {
             <Badge className={`${score ? "bg-green-200" : "bg-slate-400"}`}>
               {score ? "Completed" : "Waiting"}{" "}
             </Badge>
-            {score ? null : (
+            {score ? null : timeAgo ? (
+              <div>
+                Last Refreshed: <TimeAgo date={timeAgo} />
+              </div>
+            ) : (
               <div className="flex flex-row items-center gap-2">
                 Click <RotateCw size={14} /> button to check status of job
                 manually.
