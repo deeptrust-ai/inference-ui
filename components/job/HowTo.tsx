@@ -23,7 +23,7 @@ const CONTENTS: HowToContents = {
           <p>
             <b>Step 1.</b>
           </p>
-          <p>Find a video with speech you want to analyze.</p>
+          <p>Find a tweet with video with speech you want to analyze.</p>
         </div>
         <div>
           <p>
