@@ -21,11 +21,13 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="grid grid-flow-col grid-cols-5 items-center justify-between gap-12">
-        <div className="col-span-3">
+      <div className="grid lg:grid-flow-col lg:grid-cols-5 items-center justify-between gap-12 grid-flow-row auto-rows-auto">
+        <div className="lg:col-span-3">
           <Input />
         </div>
-        <Disclaimer />
+        <div className="row-start-1 lg:col-span-2">
+          <Disclaimer />
+        </div>
       </div>
     </div>
   );

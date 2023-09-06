@@ -133,12 +133,15 @@ const JobCard = (props: JobCardProps) => {
     }
 
     return (
-      <Card key={index} className={`flex flex-col justify-center m-6 ${color}`}>
+      <Card
+        key={index}
+        className={`flex flex-col justify-center m-6 ${color} `}
+      >
         <CardHeader>
           <CardTitle className="flex flex-row justify-between items-center pb-2">
             <div className="flex gap-2">
               {" "}
-              <Badge>{index}</Badge>
+              <Badge className="hidden sm:block">{index}</Badge>
               Speech Analysis Job
             </div>
             {score == null && (
@@ -149,7 +152,11 @@ const JobCard = (props: JobCardProps) => {
             )}
           </CardTitle>
           <CardDescription className="text-slate-200 gap-2 flex flex-row justify-normal">
-            <Badge className={`${score ? "bg-green-200" : "bg-slate-400"}`}>
+            <Badge
+              className={`hidden sm:block ${
+                score ? "bg-green-200" : "bg-slate-400"
+              }`}
+            >
               {score ? "Completed" : "Waiting"}{" "}
             </Badge>
             {score ? null : timeAgo ? (
@@ -168,7 +175,9 @@ const JobCard = (props: JobCardProps) => {
           {score ? <p>{resultMsg}</p> : <p>Waiting for job to complete...</p>}
         </CardContent>
         <CardFooter className="gap-2">
-          <Badge variant={"outline"}>DeepTruth Alpha</Badge>
+          <Badge className="hidden sm:block" variant={"outline"}>
+            DeepTruth Alpha
+          </Badge>
         </CardFooter>
       </Card>
     );

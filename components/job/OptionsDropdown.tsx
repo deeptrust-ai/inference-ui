@@ -38,8 +38,6 @@ const OptionsDropDown = (props: JobInputProps) => {
       </DropdownMenuTrigger>
       {/* Content */}
       <DropdownMenuContent>
-        <DropdownMenuLabel>Options</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleClearJobs}>
           Clear All Jobs
         </DropdownMenuItem>
