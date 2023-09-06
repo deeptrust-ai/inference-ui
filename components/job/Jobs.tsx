@@ -187,7 +187,7 @@ const JobCard = (props: JobCardProps) => {
 const scoreChecker = (score: number): [string, string] => {
   let color;
   let resultMsg;
-  if (score < 0.6) {
+  if (score < 0.5) {
     color = "bg-green-600";
     resultMsg = "No generated speech found!";
   } else if (score < 0.8) {
