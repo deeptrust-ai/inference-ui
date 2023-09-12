@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { DLogo } from "./logo";
+import Logo, { DLogo } from "./logo";
 
 import {
   NavigationMenu,
@@ -34,7 +34,7 @@ export default function NavBar() {
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href={"/"}>
-            <DLogo width={100} height={24} />
+            <Logo width={100} height={24} />
           </Link>
         </NavigationMenuItem>
         {navBarContent.map((item) => (
