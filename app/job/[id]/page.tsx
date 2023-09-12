@@ -3,6 +3,7 @@ import { JobCard } from "@/components/job/Jobs";
 import { useEffect, useState } from "react";
 import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
 import { JobOutput, JobInputProps } from "@/types/job";
+import { Loader2 } from "lucide-react";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [job, setJobState] = useState<JobOutput>();
@@ -13,11 +14,12 @@ export default function Page({ params }: { params: { id: string } }) {
     const pollJob = async () => {
       setLoading(true);
       const pollResult = await fetch(`/api/job/${id}`);
-      const newJob = await pollResult.json();
-      console.log("newJob", newJob);
-      if (newJob.score != null || newJob.scores != null) {
+      try {
+        const newJob = await pollResult.json();
         setJobLS(id, newJob);
         setJobState(newJob);
+      } catch (err) {
+        console.error(err);
       }
       setLoading(false);
     };
@@ -25,7 +27,11 @@ export default function Page({ params }: { params: { id: string } }) {
     pollJob();
   }, []);
 
-  console.log("job", job);
+  if (loading) {
+    <div className="flex flex-col mx-24 gap-4">
+      <Loader2 className="animate-spin" />
+    </div>;
+  }
 
   if (!job) {
     return <div className="flex flex-col mx-24 gap-4">No job found...</div>;
