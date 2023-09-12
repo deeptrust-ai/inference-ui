@@ -63,14 +63,13 @@ export default function WaitList() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-3 gap-4"
+        className="grid lg:grid-cols-3 gap-4 grid-flow-row auto-rows-auto"
       >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="col-span-2">
-              {/* <FormLabel>Email</FormLabel> */}
+            <FormItem className="lg:col-span-2">
               <FormControl>
                 <Input placeholder="Email" {...field} />
               </FormControl>
