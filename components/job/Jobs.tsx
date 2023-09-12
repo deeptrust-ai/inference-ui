@@ -52,7 +52,7 @@ const JobCard = (props: JobCardProps) => {
       setLoading(true);
       const pollResult = await fetch(`/api/job/${jobID}`);
       const newJob = await pollResult.json();
-      if (newJob.gen_percentage != null) {
+      if (newJob.score != null || newJob.scores != null) {
         setJobLS(jobID, newJob);
         setJobState(newJob);
       }
@@ -200,3 +200,5 @@ const scoreChecker = (score: number): [string, string] => {
 
   return [color, resultMsg];
 };
+
+export { JobCard };
