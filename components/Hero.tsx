@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function Hero() {
   return (
     <div className="text-slate-500 antialiased flex flex-col items-center justify-center text-center">
-      <Section yPadding="py-12">
+      <Section yPadding="py-12 lg:px-48">
         <header className="text-center">
           <h1 className="whitespace-pre-line text-4xl font-bold leading-hero text-white">
             {"Protect Human "}
