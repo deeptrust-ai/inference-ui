@@ -60,7 +60,11 @@ const JobInput = (props: JobInputProps) => {
           className="grid grid-flow-row auto-rows-auto  lg:grid-cols-10 gap-3 pt-2"
         >
           <div className="lg:col-span-7">
-            <Input type={props.type} onChange={handleInput} />
+            <Input
+              type={props.type}
+              onChange={handleInput}
+              placeholder={type == "file" ? undefined : "Submit URL here"}
+            />
           </div>
           <LaunchButton className="lg:col-span-2" {...props} />
           <OptionsDropDown {...props} />
