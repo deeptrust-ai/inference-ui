@@ -16,9 +16,9 @@ interface HowToContents {
 
 const CONTENTS: HowToContents = {
   tweet: {
-    title: "How To: Submit Video for Speech Analysis via Twitter.",
+    title: "How To: Submit 𝕏 Video for Speech Analysis",
     content: (
-      <div className="grid grid-flow-col grid-cols-3 justify-between text-center">
+      <div className="grid grid-flow-row gap-2 lg:grid-flow-col lg:grid-cols-3 justify-between text-center">
         <div>
           <p>
             <b>Step 1.</b>

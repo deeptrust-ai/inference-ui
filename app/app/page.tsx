@@ -21,7 +21,7 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="grid lg:grid-flow-col lg:grid-cols-5 items-center justify-between gap-12 grid-flow-row auto-rows-auto">
+      <div className="grid lg:grid-flow-col lg:grid-cols-5 items-center justify-between gap-12 grid-flow-row auto-rows-auto mb-24">
         <div className="lg:col-span-3">
           <Input />
         </div>

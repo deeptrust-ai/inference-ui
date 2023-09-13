@@ -52,14 +52,17 @@ const JobInput = (props: JobInputProps) => {
   const label = labelOptions[type];
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
+    <div className="flex flex-row lg:flex-col gap-6">
+      <div className="flex-grow">
         <Label htmlFor="audioFile">{label}</Label>
-        <div id="audioFile" className="grid grid-cols-10 gap-3 pt-2">
-          <div className="col-span-7">
+        <div
+          id="audioFile"
+          className="grid grid-flow-row auto-rows-auto  lg:grid-cols-10 gap-3 pt-2"
+        >
+          <div className="lg:col-span-7">
             <Input type={props.type} onChange={handleInput} />
           </div>
-          <LaunchButton className="col-span-2" {...props} />
+          <LaunchButton className="lg:col-span-2" {...props} />
           <OptionsDropDown {...props} />
         </div>
       </div>
