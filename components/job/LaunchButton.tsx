@@ -58,7 +58,7 @@ const LaunchButton = (props: JobInputProps & { className: string }) => {
     body.append("fileName", input.name);
     // TODO: Add modelType prop
     body.append("modelType", "ss");
-    const url = "/api/job";
+    const url = "/edge/job";
     const options = {
       method: "POST",
       body,
@@ -72,7 +72,7 @@ const LaunchButton = (props: JobInputProps & { className: string }) => {
   const launchJobURL = async () => {
     if (input == null) return;
     // TODO: Add non-twitter URLs
-    const url = `/api/job?url=${input}`;
+    const url = `/edge/job?url=${input}`;
     const response = await fetch(url);
     const data = await response.json();
 
