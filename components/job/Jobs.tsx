@@ -50,7 +50,7 @@ const JobCard = (props: JobCardProps) => {
   useEffect(() => {
     const pollJob = async () => {
       setLoading(true);
-      const pollResult = await fetch(`/api/job/${jobID}`);
+      const pollResult = await fetch(`/edge/job/${jobID}`);
       const newJob = await pollResult.json();
       if (newJob.score != null || newJob.scores != null) {
         setJobLS(jobID, newJob);
@@ -65,7 +65,7 @@ const JobCard = (props: JobCardProps) => {
   const onStatusClick = async () => {
     setTimeAgo(new Date());
     setLoading(true);
-    const status = await fetch(`/api/job/${jobID}`);
+    const status = await fetch(`/edge/job/${jobID}`);
     const newJob = await status.json();
 
     setJobLS(jobID, newJob);

@@ -13,7 +13,7 @@ export default function Page({ params }: { params: { id: string } }) {
   useEffect(() => {
     const pollJob = async () => {
       setLoading(true);
-      const pollResult = await fetch(`/api/job/${id}`);
+      const pollResult = await fetch(`/edge/job/${id}`);
       try {
         const newJob = await pollResult.json();
         setJobLS(id, newJob);
