@@ -10,8 +10,9 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "DeepTrust",
-  description: "Protect Human Authenticity with Deepfake Detection",
+  title: "DeepTrust Inference",
+  description:
+    "Inference DeepTrust Models - Protect Human Authenticity with Deepfake Detection",
 };
 
 export default function RootLayout({
