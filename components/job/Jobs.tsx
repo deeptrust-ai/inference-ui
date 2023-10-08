@@ -19,7 +19,7 @@ import TimeAgo from "react-timeago";
 import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
 
 // types
-import { JobOutput, JobProps } from "@/types/job";
+import { Job, JobProps } from "@/types/job";
 import { RotateCw } from "lucide-react";
 
 export default function Jobs(props: JobProps) {
@@ -37,14 +37,14 @@ export default function Jobs(props: JobProps) {
 
 type JobCardProps = {
   index: number;
-  job: JobOutput;
+  job: Job;
   jobID: string;
 };
 
 const JobCard = (props: JobCardProps) => {
   let { index, job: defaultJob, jobID } = props;
   const [loading, setLoading] = useState<boolean>(false);
-  const [job, setJobState] = useState<JobOutput>(defaultJob);
+  const [job, setJobState] = useState<Job>(defaultJob);
   const [timeAgo, setTimeAgo] = useState<Date>();
 
   useEffect(() => {
@@ -73,8 +73,10 @@ const JobCard = (props: JobCardProps) => {
     setLoading(false);
   };
 
-  if (job.scores && job.scores.length > 1) {
-    const { scores } = job;
+  const { output } = job;
+
+  if (output?.scores && output.scores.length > 1) {
+    const { scores } = output;
     const colors: string[] = [];
     const resultMsgs: string[] = [];
     scores.forEach((score) => {
@@ -121,9 +123,9 @@ const JobCard = (props: JobCardProps) => {
     );
   } else {
     // single score
-    let { score } = job;
-    if (score == null && job.scores) {
-      score = job.scores[0];
+    let score = output?.score;
+    if (output?.score == undefined && output?.scores) {
+      score = output.scores[0];
     }
 
     let color = "bg-slate-500";
