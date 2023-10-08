@@ -19,10 +19,10 @@ import TimeAgo from "react-timeago";
 import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
 
 // types
-import { JobOutput, JobInputProps } from "@/types/job";
+import { JobOutput, JobProps } from "@/types/job";
 import { RotateCw } from "lucide-react";
 
-export default function Jobs(props: JobInputProps) {
+export default function Jobs(props: JobProps) {
   const { jobs } = props;
   const jobIds = Object.keys(jobs);
 

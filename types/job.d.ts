@@ -1,22 +1,28 @@
 type JobType = "file" | "url" | "tweet";
+type JobStatus = "started" | "completed";
+
+interface Job {
+  type: JobType;
+  status: JobStatus;
+  output?: JobOutput;
+}
+
+interface Jobs {
+  [key: string]: Job;
+}
 
 interface JobOutput {
   message: string;
-  type?: JobType;
   score?: number | null;
   scores?: number[] | null;
 }
 
-interface JobOutputs {
-  [key: string]: JobOutput;
-}
-
-type JobInputProps = {
-  jobs: JobOutputs;
-  setJobsState: Dispatch<SetStateAction<JobOutputs>>;
+type JobProps = {
+  jobs: Jobs;
+  setJobsState: Dispatch<SetStateAction<Jobs>>;
   type?: JobType;
   input: File | string | null;
-  setInput: Dispatch<SetStateAction<JobInputProps["input"]>>;
+  setInput: Dispatch<SetStateAction<JobProps["input"]>>;
 };
 
-export type { JobOutput, JobType, JobOutputs, JobInputProps };
+export type { Job, Jobs, JobOutput, JobType, JobProps };

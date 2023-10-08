@@ -12,9 +12,9 @@ import OptionsDropDown from "./OptionsDropdown";
 import ErrorAlert from "../ErrorAlert";
 
 // types
-import { JobInputProps } from "@/types/job";
+import { JobProps } from "@/types/job";
 
-const JobInput = (props: JobInputProps) => {
+const JobInput = (props: JobProps) => {
   const [error, setError] = useState<string | null>(null);
 
   const { setInput, type } = props;

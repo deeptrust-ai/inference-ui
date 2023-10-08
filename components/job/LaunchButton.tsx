@@ -6,10 +6,10 @@ import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
 
 import { setJob } from "@/utils/localStorage";
-import { JobInputProps, JobOutput, JobOutputs } from "@/types/job";
+import { JobProps, Job, JobOutput, Jobs } from "@/types/job";
 import { Loader2 } from "lucide-react";
 
-const LaunchButton = (props: JobInputProps & { className: string }) => {
+const LaunchButton = (props: JobProps & { className: string }) => {
   const { className, type, setJobsState, input } = props;
   const [loading, setLoading] = useState<boolean>(false);
   // launch toast
@@ -26,15 +26,19 @@ const LaunchButton = (props: JobInputProps & { className: string }) => {
     const data = await launcher();
 
     if (data.id) {
-      const job: JobOutput = {
+      const output: JobOutput = {
         message: data.message,
+      };
+      const job: Job = {
         type,
+        output,
+        status: "started",
       };
       // set localStorage
       setJob(data.id, job);
 
       const updatedValue = { [data.id]: job };
-      setJobsState((currentJobs: JobOutputs) => ({
+      setJobsState((currentJobs: Jobs) => ({
         ...currentJobs,
         ...updatedValue,
       }));

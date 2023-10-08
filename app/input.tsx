@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FolderUp, TwitterIcon } from "lucide-react";
 
 // components
-import Jobs from "@/components/job/Jobs";
+import { default as JobsList } from "@/components/job/Jobs";
 import JobInput from "@/components/job/JobInput";
 import { Label } from "@/components/ui/label";
 
@@ -15,18 +15,18 @@ import { Label } from "@/components/ui/label";
 import { getJobs } from "@/utils/localStorage";
 
 // types
-import { JobInputProps, JobOutputs, JobType } from "@/types/job";
+import { JobProps, Jobs, JobType } from "@/types/job";
 import HowTo from "@/components/job/HowTo";
 
 export default function Input() {
-  const [jobs, setJobsState] = useState<JobOutputs>({});
-  const [input, setInput] = useState<JobInputProps["input"]>(null);
+  const [jobs, setJobsState] = useState<Jobs>({});
+  const [input, setInput] = useState<JobProps["input"]>(null);
 
   useEffect(() => {
     setJobsState(getJobs());
   }, []);
 
-  const props: JobInputProps = {
+  const props: JobProps = {
     input,
     setInput,
     jobs,
@@ -62,7 +62,7 @@ export default function Input() {
         </TabsContent>
       </Tabs>
       {/* List of Jobs */}
-      <Jobs {...props} />
+      <JobsList {...props} />
     </div>
   );
 }

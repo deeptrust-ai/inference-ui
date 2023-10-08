@@ -1,5 +1,5 @@
 "use client";
-import { JobInputProps } from "@/types/job";
+import { JobProps } from "@/types/job";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +13,7 @@ import { MoreHorizontal } from "lucide-react";
 import { clearJobs } from "@/utils/localStorage";
 import { useToast } from "../ui/use-toast";
 
-const OptionsDropDown = (props: JobInputProps) => {
+const OptionsDropDown = (props: JobProps) => {
   const { setJobsState } = props;
   const { toast } = useToast();
 

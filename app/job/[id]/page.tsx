@@ -2,11 +2,11 @@
 import { JobCard } from "@/components/job/Jobs";
 import { useEffect, useState } from "react";
 import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
-import { JobOutput, JobInputProps } from "@/types/job";
+import { Job, JobProps } from "@/types/job";
 import { Loader2 } from "lucide-react";
 
 export default function Page({ params }: { params: { id: string } }) {
-  const [job, setJobState] = useState<JobOutput>();
+  const [job, setJobState] = useState<Job>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const { id } = params;
