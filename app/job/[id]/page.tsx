@@ -7,7 +7,7 @@ import { Loader2 } from "lucide-react";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [job, setJobState] = useState<Job>();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const { id } = params;
   useEffect(() => {
