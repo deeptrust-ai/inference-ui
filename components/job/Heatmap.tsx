@@ -1,18 +1,24 @@
 const Heatmap = ({ data }: { data?: number[] }) => {
   if (!data) return;
   return (
-    <div className="grid grid-flow-col">
-      {data?.map((val, idx) => (
-        <div
-          key={idx}
-          style={{
-            backgroundColor: perc2color(val * 100),
-            color: perc2color(val * 100),
-          }}
-        >
-          {val}
-        </div>
-      ))}
+    <div className="mt-6">
+      <h2>
+        <b>Heatmap</b>
+      </h2>
+      <div className="grid grid-flow-col border shadow-xl">
+        {data?.map((val, idx) => (
+          <div
+            key={idx}
+            className="shadow-xl"
+            style={{
+              backgroundColor: perc2color(val * 100),
+              color: perc2color(val * 100),
+            }}
+          >
+            {val}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
