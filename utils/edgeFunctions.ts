@@ -7,7 +7,10 @@ const parseData = (data: any): JobOutput => {
       scores: [data.score],
     };
   }
-  return data;
+  return {
+    ...data,
+    segmented: data.segmented_predictions,
+  };
 };
 
 export { parseData };
