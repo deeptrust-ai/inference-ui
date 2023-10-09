@@ -22,6 +22,7 @@ import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
 import { Job, JobOutput, JobProps } from "@/types/job";
 import { RotateCw, Twitter } from "lucide-react";
 import Link from "next/link";
+import Heatmap from "./Heatmap";
 
 export default function Jobs(props: JobProps) {
   const { jobs } = props;
@@ -81,8 +82,6 @@ const JobCard = (props: JobCardProps) => {
 
   const { output } = job;
 
-  console.log(output);
-
   if (output?.scores && output.scores.length > 1) {
     const { scores } = output;
     const colors: string[] = [];
@@ -134,6 +133,12 @@ const JobCard = (props: JobCardProps) => {
     let score = null;
     if (output?.scores) {
       score = output.scores[0];
+    }
+
+    let segmented = output?.segmented;
+    // handle non-files with segmented_predictions set up as number[][]
+    if (output?.segmented && Array.isArray(output?.segmented[0])) {
+      segmented = output?.segmented[0] as unknown as number[];
     }
 
     let color = "bg-slate-500";
@@ -198,6 +203,7 @@ const JobCard = (props: JobCardProps) => {
         </CardHeader>
         <CardContent>
           {score ? <p>{resultMsg}</p> : <p>Waiting for job to complete...</p>}
+          <Heatmap data={segmented} />
         </CardContent>
         <CardFooter className="gap-2">
           <Badge className="hidden sm:block" variant={"outline"}>

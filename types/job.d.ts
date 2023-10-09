@@ -15,6 +15,7 @@ interface Jobs {
 interface JobOutput {
   message: string;
   scores?: number[];
+  segmented?: number[];
 }
 
 interface JobProps {
