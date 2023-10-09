@@ -19,7 +19,7 @@ import TimeAgo from "react-timeago";
 import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
 
 // types
-import { Job, JobProps } from "@/types/job";
+import { Job, JobOutput, JobProps } from "@/types/job";
 import { RotateCw } from "lucide-react";
 
 export default function Jobs(props: JobProps) {
@@ -47,30 +47,35 @@ const JobCard = (props: JobCardProps) => {
   const [job, setJobState] = useState<Job>(defaultJob);
   const [timeAgo, setTimeAgo] = useState<Date>();
 
-  useEffect(() => {
-    const pollJob = async () => {
-      setLoading(true);
-      const pollResult = await fetch(`/edge/job/${jobID}`);
-      const newJob = await pollResult.json();
-      if (newJob.score != null || newJob.scores != null) {
-        setJobLS(jobID, newJob);
-        setJobState(newJob);
-      }
-      setLoading(false);
-    };
+  const handleNewJobOutput = (newJobOutput: JobOutput) => {
+    if (newJobOutput.scores != null) {
+      const newJob: Job = {
+        ...job,
+        status: "completed",
+        output: newJobOutput,
+      };
+      setJobLS(jobID, newJob);
+      setJobState(newJob);
+    }
+  };
 
-    pollJob();
+  const poll = async () => {
+    setLoading(true);
+    const pollResult = await fetch(`/edge/job/${jobID}`);
+    const newJobOutput = await pollResult.json();
+
+    handleNewJobOutput(newJobOutput);
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    poll();
   }, [jobID]);
 
   const onStatusClick = async () => {
     setTimeAgo(new Date());
-    setLoading(true);
-    const status = await fetch(`/edge/job/${jobID}`);
-    const newJob = await status.json();
-
-    setJobLS(jobID, newJob);
-    setJobState(newJob);
-    setLoading(false);
+    poll();
   };
 
   const { output } = job;

@@ -1,4 +1,4 @@
-import { Job } from "@/types/job";
+import { Job, Jobs } from "@/types/job";
 
 const setJob = (id: string, data: Job): void => {
   const jobs = { ...getJobs() };
@@ -12,7 +12,7 @@ const getJob = (id: string): Job | null => {
   return jobs[id] || null;
 };
 
-const getJobs = () => {
+const getJobs = (): Jobs => {
   let lsJobs = localStorage.getItem("dtJobs");
   let jobs;
   if (!lsJobs) {

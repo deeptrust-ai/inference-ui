@@ -13,7 +13,6 @@ interface Jobs {
 
 interface JobOutput {
   message: string;
-  score?: number | null;
   scores?: number[] | null;
 }
 

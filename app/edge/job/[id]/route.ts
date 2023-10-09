@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { JobOutput } from "@/types/job";
 import apiURLPrefix from "@/utils/url";
+import { parseData } from "@/utils/edgeFunctions";
 
 type paramsType = { id: string };
 
@@ -16,11 +17,11 @@ export async function GET(
   if (res.status == 202) {
     const output: JobOutput = {
       message: "Job not finished.",
-      score: null,
+      scores: null,
     };
     return NextResponse.json(output);
   }
 
-  const data: JobOutput = await res.json();
-  return NextResponse.json(data);
+  const data = await res.json();
+  return NextResponse.json(parseData(data));
 }

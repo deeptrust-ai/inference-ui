@@ -4,6 +4,7 @@ import apiURLPrefix from "@/utils/url";
 import axios from "axios";
 import FormData from "form-data";
 
+// launch file job
 export async function POST(request: NextRequest) {
   const data = await request.formData();
   const file = data.get("file") as File;
@@ -37,6 +38,8 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// launch URL job
+// at the moment, twitter URLs are the only type of URL job
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const audioURL = searchParams.get("url");
