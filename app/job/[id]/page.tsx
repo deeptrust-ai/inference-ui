@@ -25,7 +25,7 @@ export default function Page({ params }: { params: { id: string } }) {
     };
 
     pollJob();
-  }, []);
+  }, [id]);
 
   if (loading) {
     <div className="flex flex-col mx-24 gap-4">
