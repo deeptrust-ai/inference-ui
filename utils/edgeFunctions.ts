@@ -1,16 +1,19 @@
-import { Job, JobOutput } from "@/types/job";
+import { JobOutput } from "@/types/job";
 
 const parseData = (data: any): JobOutput => {
   if (data.score) {
     return {
-      ...data,
+      message: data.message,
+      segmented: data.segmented_prediction,
       scores: [data.score],
     };
   }
-  return {
-    ...data,
+  const output: JobOutput = {
+    message: data.message,
     segmented: data.segmented_predictions,
+    scores: data.scores,
   };
+  return output;
 };
 
 export { parseData };
