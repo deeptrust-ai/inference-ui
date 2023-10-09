@@ -135,6 +135,12 @@ const JobCard = (props: JobCardProps) => {
       score = output.scores[0];
     }
 
+    let segmented = output?.segmented;
+    // handle non-files with segmented_predictions set up as number[][]
+    if (job.type != "file" && output?.segmented) {
+      segmented = output?.segmented[0] as unknown as number[];
+    }
+
     let color = "bg-slate-500";
     let resultMsg = null;
     if (score) {
@@ -197,7 +203,7 @@ const JobCard = (props: JobCardProps) => {
         </CardHeader>
         <CardContent>
           {score ? <p>{resultMsg}</p> : <p>Waiting for job to complete...</p>}
-          <Heatmap data={output?.segmented} />
+          <Heatmap data={segmented} />
         </CardContent>
         <CardFooter className="gap-2">
           <Badge className="hidden sm:block" variant={"outline"}>
