@@ -1,4 +1,5 @@
 const Heatmap = ({ data }: { data?: number[] }) => {
+  if (!data) return;
   return (
     <div className="grid grid-flow-col">
       {data?.map((val) => (

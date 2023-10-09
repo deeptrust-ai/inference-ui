@@ -137,7 +137,7 @@ const JobCard = (props: JobCardProps) => {
 
     let segmented = output?.segmented;
     // handle non-files with segmented_predictions set up as number[][]
-    if (job.type != "file" && output?.segmented) {
+    if (output?.segmented && Array.isArray(output?.segmented[0])) {
       segmented = output?.segmented[0] as unknown as number[];
     }
 
