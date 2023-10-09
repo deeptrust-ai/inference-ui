@@ -20,7 +20,8 @@ import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
 
 // types
 import { Job, JobOutput, JobProps } from "@/types/job";
-import { RotateCw } from "lucide-react";
+import { RotateCw, Twitter } from "lucide-react";
+import Link from "next/link";
 
 export default function Jobs(props: JobProps) {
   const { jobs } = props;
@@ -128,9 +129,9 @@ const JobCard = (props: JobCardProps) => {
     );
   } else {
     // single score
-    let score = output?.score;
-    if (output?.score == undefined && output?.scores) {
-      score = output.scores[0];
+    let score = null;
+    if (output?.scores) {
+      let score = output.scores[0];
     }
 
     let color = "bg-slate-500";
@@ -159,8 +160,23 @@ const JobCard = (props: JobCardProps) => {
             )}
           </CardTitle>
           <CardDescription className="text-slate-200 gap-2 flex flex-row justify-normal">
+            <Badge>
+              {job.origin &&
+                (job.type == "file" ? (
+                  job.origin
+                ) : (
+                  <Link
+                    target="_blank"
+                    href={withHttp(job.origin)}
+                    rel="noopener noreferrer"
+                    passHref
+                  >
+                    <Twitter />
+                  </Link>
+                ))}
+            </Badge>
             <Badge
-              className={`hidden sm:block ${
+              className={`hidden sm:flex sm:align-middle ${
                 score ? "bg-green-200" : "bg-slate-400"
               }`}
             >
@@ -207,5 +223,8 @@ const scoreChecker = (score: number): [string, string] => {
 
   return [color, resultMsg];
 };
+
+const withHttp = (url: string) =>
+  !/^https?:\/\//i.test(url) ? `http://${url}` : url;
 
 export { JobCard };

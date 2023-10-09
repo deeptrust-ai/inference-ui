@@ -34,6 +34,14 @@ const LaunchButton = (props: JobProps & { className: string }) => {
         output,
         status: "started",
       };
+
+      // set origin metadata
+      if (type == "file" && input instanceof File) {
+        job.origin = input.name;
+      } else if (type != "file" && typeof input == "string") {
+        job.origin = input;
+      }
+
       // set localStorage
       setJob(data.id, job);
 
