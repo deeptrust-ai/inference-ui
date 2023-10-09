@@ -81,6 +81,8 @@ const JobCard = (props: JobCardProps) => {
 
   const { output } = job;
 
+  console.log(output);
+
   if (output?.scores && output.scores.length > 1) {
     const { scores } = output;
     const colors: string[] = [];
@@ -131,7 +133,7 @@ const JobCard = (props: JobCardProps) => {
     // single score
     let score = null;
     if (output?.scores) {
-      let score = output.scores[0];
+      score = output.scores[0];
     }
 
     let color = "bg-slate-500";
