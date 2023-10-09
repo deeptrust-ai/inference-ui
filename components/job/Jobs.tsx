@@ -22,6 +22,7 @@ import { getJobs as getJobsLS, setJob as setJobLS } from "@/utils/localStorage";
 import { Job, JobOutput, JobProps } from "@/types/job";
 import { RotateCw, Twitter } from "lucide-react";
 import Link from "next/link";
+import Heatmap from "./Heatmap";
 
 export default function Jobs(props: JobProps) {
   const { jobs } = props;
@@ -198,6 +199,7 @@ const JobCard = (props: JobCardProps) => {
         </CardHeader>
         <CardContent>
           {score ? <p>{resultMsg}</p> : <p>Waiting for job to complete...</p>}
+          <Heatmap data={[]} />
         </CardContent>
         <CardFooter className="gap-2">
           <Badge className="hidden sm:block" variant={"outline"}>
