@@ -82,8 +82,6 @@ const JobCard = (props: JobCardProps) => {
 
   const { output } = job;
 
-  console.log(output);
-
   if (output?.scores && output.scores.length > 1) {
     const { scores } = output;
     const colors: string[] = [];
@@ -199,7 +197,7 @@ const JobCard = (props: JobCardProps) => {
         </CardHeader>
         <CardContent>
           {score ? <p>{resultMsg}</p> : <p>Waiting for job to complete...</p>}
-          <Heatmap data={[]} />
+          <Heatmap data={output?.segmented} />
         </CardContent>
         <CardFooter className="gap-2">
           <Badge className="hidden sm:block" variant={"outline"}>
