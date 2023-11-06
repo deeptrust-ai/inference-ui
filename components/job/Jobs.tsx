@@ -202,7 +202,16 @@ const JobCard = (props: JobCardProps) => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {score ? <p>{resultMsg}</p> : <p>Waiting for job to complete...</p>}
+          {score ? (
+            <div>
+              <p>{resultMsg}</p>
+              <p>
+                <b>Generated Likeliness Score:</b> {score * 100}%
+              </p>
+            </div>
+          ) : (
+            <p>Waiting for job to complete...</p>
+          )}
           <Heatmap data={segmented} />
         </CardContent>
         <CardFooter className="gap-2">
