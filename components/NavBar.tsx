@@ -49,6 +49,11 @@ const disinformationList: ItemType[] = [
     link: "/disinformation/audio",
     desc: "Transcribe audio and fact check the content.",
   },
+  {
+    title: "Text Content Misinformation",
+    link: "/disinformation/text",
+    desc: "Transcribe audio and fact check the content.",
+  },
 ];
 
 const genLink = (title: string, link: string) => (
