@@ -6,13 +6,10 @@ import { useChat } from "ai/react";
 
 // ui
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 
 // data
 import defaultPrompt from "./default-prompt";
-import { toast } from "@/components/ui/use-toast";
 import { Textarea } from "@/components/ui/textarea";
 
 interface IForm {
