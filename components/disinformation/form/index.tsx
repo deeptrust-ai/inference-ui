@@ -72,7 +72,11 @@ const DisinForm = ({ preProcess }: IForm) => {
         </div>
         <div className="mt-5 flex justify-center md:justify-start">
           <Button disabled={isLoading} type="submit">
-            {isLoading ? "Generating..." : "✨ Generate AI Factcheck ✨"}
+            {isPreProcessing
+              ? "Preprocessing..."
+              : isLoading
+              ? "Generating..."
+              : "✨ Generate AI Factcheck ✨"}
           </Button>
         </div>
       </form>
