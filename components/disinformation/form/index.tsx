@@ -11,9 +11,13 @@ import { Label } from "@/components/ui/label";
 // data
 import defaultPrompt from "./default-prompt";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+
+// utils
+import transcribe from "./transcribe";
 
 interface IForm {
-  preProcess?: (x: string) => string;
+  transcibeURL?: string;
 }
 
 const genPrompt = (text: string) => `
@@ -22,12 +26,14 @@ ${defaultPrompt}
 ${text}
 `;
 
-const DisinForm = ({ preProcess }: IForm) => {
+const DisinForm = ({ transcibeURL }: IForm) => {
   const [textInputValue, setTextInputValue] = useState<string>("");
-  const [isPreProcessing, setIsPreProcess] = useState<boolean>(false);
+  const [transcription, setTranscription] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string | null>("");
+  const [isTranscribing, setIsTranscribing] = useState<boolean>(false);
 
   let type = "transcription";
-  if (preProcess) {
+  if (transcibeURL) {
     type = "url";
   }
 
@@ -37,15 +43,26 @@ const DisinForm = ({ preProcess }: IForm) => {
 
   // update chat input on value changes
   useEffect(() => setInput(genPrompt(textInputValue)), [textInputValue]);
+  useEffect(() => setInput(genPrompt(transcription)), [transcription]);
 
-  const onSubmit = (e: any) => {
-    if (preProcess) {
-      setIsPreProcess(true);
-      setTextInputValue(preProcess(textInputValue));
-      setIsPreProcess(false);
+  const onInputChange = async (e: any) => {
+    e.preventDefault();
+    const newValue = e.target.value;
+    if (newValue == "") return;
+    setTextInputValue(newValue);
+    if (transcibeURL) {
+      setIsTranscribing(true);
+      const [output, err] = await transcribe(transcibeURL + `?url=${newValue}`);
+      setIsTranscribing(false);
+
+      if (!output) {
+        console.error(err);
+        setErrorMessage(err);
+        return;
+      } else {
+        setTranscription(output);
+      }
     }
-
-    handleSubmit(e);
   };
 
   // process chatGPT response
@@ -53,27 +70,40 @@ const DisinForm = ({ preProcess }: IForm) => {
   const generatedMessage =
     lastMessage?.role === "assistant" ? lastMessage.content : null;
 
+  // function to handle input component type
+  const genInput = () =>
+    type != "url" ? (
+      <Textarea
+        id="text"
+        className="bg-white text-black"
+        placeholder="Add text to factcheck..."
+        value={textInputValue}
+        onChange={(e) => setTextInputValue(e.target.value)}
+      />
+    ) : (
+      <Input
+        id="text"
+        disabled={isTranscribing}
+        className="bg-white text-black"
+        placeholder="Add URL..."
+        value={textInputValue}
+        onChange={onInputChange}
+      />
+    );
+
   return (
     <div>
-      <form className="" onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col">
           <Label htmlFor="name" className="font-bold  mb-3">
             {type == "url" ? "URL" : "Text"}
           </Label>
-          <Textarea
-            id="text"
-            className="bg-white text-black"
-            placeholder={
-              type == "URL" ? "Add URL..." : "Add text to factcheck..."
-            }
-            value={textInputValue}
-            onChange={(e) => setTextInputValue(e.target.value)}
-          />
+          {genInput()}
         </div>
         <div className="mt-5 flex justify-center md:justify-start">
-          <Button disabled={isLoading} type="submit">
-            {isPreProcessing
-              ? "Preprocessing..."
+          <Button disabled={isTranscribing || isLoading} type="submit">
+            {isTranscribing
+              ? "Transcribing..."
               : isLoading
               ? "Generating..."
               : "✨ Generate AI Factcheck ✨"}
