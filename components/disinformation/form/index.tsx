@@ -5,6 +5,12 @@ import { useState, useRef, useEffect } from "react";
 import { useChat } from "ai/react";
 
 // ui
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -113,14 +119,23 @@ const DisinForm = ({ transcibeURL }: IForm) => {
         </div>
       </form>
 
-      {!errorMessage && (
+      {errorMessage && (
         <Alert className="m-6" variant={"destructive"}>
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{errorMessage}</AlertDescription>
         </Alert>
       )}
-
+      {transcription && (
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Content Transcript</AccordionTrigger>
+            <AccordionContent className="text-xs">
+              {transcription}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
       <output className="space-y-10 m-24">
         {generatedMessage && (
           <div className="flex flex-col items-center">
