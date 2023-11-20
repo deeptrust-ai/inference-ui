@@ -5,6 +5,8 @@ import { useState, useRef, useEffect } from "react";
 import { useChat } from "ai/react";
 
 // ui
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
@@ -110,6 +112,14 @@ const DisinForm = ({ transcibeURL }: IForm) => {
           </Button>
         </div>
       </form>
+
+      {!errorMessage && (
+        <Alert className="m-6" variant={"destructive"}>
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{errorMessage}</AlertDescription>
+        </Alert>
+      )}
 
       <output className="space-y-10 m-24">
         {generatedMessage && (
