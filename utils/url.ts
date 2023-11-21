@@ -8,5 +8,5 @@ const apiURLPrefix =
     : process.env.MODAL_DEV
     ? modalDev
     : localDev;
-console.log(apiURLPrefix);
+
 export default apiURLPrefix;
