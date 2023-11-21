@@ -1,6 +1,8 @@
 import apiURLPrefix from "@/utils/url";
 import { NextRequest, NextResponse } from "next/server";
 
+export const maxDuration = 30; // maxDuration increased from 10s -> 30s
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
 
