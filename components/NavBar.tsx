@@ -38,21 +38,21 @@ const deepfakeList: ItemType[] = [
   },
 ];
 
-const disinformationList: ItemType[] = [
+const verityList: ItemType[] = [
   {
-    title: "Video Content Misinformation",
-    link: "/disinformation/video",
-    desc: "Transcribe videos and fact check the content.",
+    title: "Twitter Content Misinformation",
+    link: "/verity/twitter",
+    desc: "Transcribe twitter videos and fact check the content.",
   },
-  {
-    title: "Audio Content Misinformation",
-    link: "/disinformation/audio",
-    desc: "Transcribe audio and fact check the content.",
-  },
+  // {
+  //   title: "Audio Content Misinformation",
+  //   link: "/verity/audio",
+  //   desc: "Transcribe audio and fact check the content.",
+  // },
   {
     title: "Text Content Misinformation",
-    link: "/disinformation/text",
-    desc: "Transcribe audio and fact check the content.",
+    link: "/verity/text",
+    desc: "Fact check text-based content (articles, transciptions, etc).",
   },
 ];
 
@@ -89,10 +89,10 @@ export default function NavBar() {
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>
-            Disinformation Detection
+            Verity - Disinformation Detection
           </NavigationMenuTrigger>
           <NavigationMenuContent className="bg-red">
-            {genList(disinformationList)}
+            {genList(verityList)}
           </NavigationMenuContent>
         </NavigationMenuItem>
       </NavigationMenuList>
