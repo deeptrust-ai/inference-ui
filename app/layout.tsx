@@ -22,6 +22,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      {/* instametrics */}
+      <script
+        async
+        src="https://instametrics-script.s3.us-west-1.amazonaws.com/instametrics-script.min.js"
+        data-instametrics-server-url="https://nextjs-with-supabase-five-kappa.vercel.app"
+        data-instametrics-script-id="2d797a42-4472-4728-abb7-bd320328990c"
+      ></script>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <NavBar />
