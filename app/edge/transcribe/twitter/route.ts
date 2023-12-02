@@ -6,17 +6,23 @@ export const maxDuration = 30; // maxDuration increased from 10s -> 30s
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
 
-  const tweetURL = searchParams.get("url");
-  console.log(`Transcribing (${tweetURL})...`);
+  const reqURL = new URL(apiURLPrefix + "transcribe/twitter");
 
-  if (tweetURL == null) {
+  const tweetURL = searchParams.get("url");
+  const tweetID = searchParams.get("tweetID");
+
+  if (tweetURL) {
+    console.log(`Transcribing (${tweetURL})...`);
+    reqURL.searchParams.append("url", tweetURL);
+  } else if (tweetID) {
+    console.log(`Transcribing (${tweetID})...`);
+    reqURL.searchParams.append("tweet_ID", tweetID);
+  } else {
     console.error("'url' param was not found");
     return NextResponse.error();
   }
 
   try {
-    const reqURL = new URL(apiURLPrefix + "transcribe/twitter");
-    reqURL.searchParams.append("url", tweetURL);
     const response = await fetch(reqURL);
     const data = await response.json();
 
