@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { Loader2 } from "lucide-react";
 
+// TODO: Add get getInitialProps or getServerSideProps
 const Tweet = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [transcription, setTranscription] = useState("");
