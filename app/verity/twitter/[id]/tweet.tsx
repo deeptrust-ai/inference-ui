@@ -1,6 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 
+// ui
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Loader2 } from "lucide-react";
 
 const Tweet = ({ id }: { id: string }) => {
@@ -30,12 +37,21 @@ const Tweet = ({ id }: { id: string }) => {
   }, []);
 
   return (
-    <div>
-      <p>Verity page {id}</p>
-
+    <div className="flex flex-col items-center justify-center max-w-xl mx-auto whitespace-pre-line space-y-8">
       {loading && <Loader2 className="animate-spin" />}
-      <p>{transcription}</p>
-      <p>{factCheck}</p>
+      {transcription && (
+        <Accordion type="single" collapsible className="w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Content Transcript</AccordionTrigger>
+            <AccordionContent>{transcription}</AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
+      {factCheck && (
+        <span className="bg-white rounded-xl shadow-md p-4 hover:bg-gray-100 transition cursor-copy border text-black">
+          {factCheck}
+        </span>
+      )}
     </div>
   );
 };
