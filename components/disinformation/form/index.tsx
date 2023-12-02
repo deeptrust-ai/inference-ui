@@ -22,7 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 
 // utils
-import transcribe from "./transcribe";
+import transcribe from "../transcribe";
 
 interface IForm {
   transcibeURL?: string;
