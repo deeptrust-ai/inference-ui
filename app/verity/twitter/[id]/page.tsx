@@ -1,16 +1,19 @@
 "use client";
-
 import { useEffect, useState } from "react";
+
+import { Loader2 } from "lucide-react";
 
 interface IPageProps {
   params: { id: string };
 }
 
 const Tweets = ({ id }: { id: string }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [transcription, setTranscription] = useState("");
   const [factCheck, setFactCheck] = useState("");
 
   const getTweet = async (id: string) => {
+    setLoading(true);
     const res = await fetch(`/edge/tweet?id=${id}`);
 
     if (!res.ok) {
@@ -23,6 +26,7 @@ const Tweets = ({ id }: { id: string }) => {
 
     setTranscription(tweetData.transcription);
     setFactCheck(tweetData.fact_check);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -32,6 +36,8 @@ const Tweets = ({ id }: { id: string }) => {
   return (
     <div>
       <p>Verity page {id}</p>
+
+      {loading && <Loader2 className="animate-spin" />}
       <p>{transcription}</p>
       <p>{factCheck}</p>
     </div>
