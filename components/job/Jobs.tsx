@@ -230,7 +230,7 @@ const scoreChecker = (score: number): [string, string] => {
   if (score < 0.5) {
     color = "bg-green-600";
     resultMsg = "No generated speech found!";
-  } else if (score < 0.8) {
+  } else if (score < 0.75) {
     color = "bg-yellow-500";
     resultMsg = "Be Cautious. Catching patterns of generated speech.";
   } else {
