@@ -33,6 +33,12 @@ const JobInput = (props: JobProps) => {
       if (file.type == "audio/wav") {
         setInput(file);
         setError(null);
+      } else if (file.type == "audio/mpeg") {
+        // TODO: Set up mp3 support
+        // setError(
+        //   "Caution: You uploaded an mp3. DeepTrust Speech was trained on wavfiles."
+        // );
+        setInput(file);
       } else {
         setError("DeepTrust only supports wavfiles at the moment.");
         setInput(null);
