@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -10,6 +11,7 @@ import {
 // components
 import Section from "@/components/Section";
 import Link from "next/link";
+import { Label } from "@radix-ui/react-label";
 
 type ItemType = { title: string; link?: string; desc?: string };
 
@@ -49,15 +51,13 @@ const verityList: ItemType[] = [
 const ConditionalWrapper = ({ condition, wrapper, children }: any) =>
   condition ? wrapper(children) : children;
 
-export default function Page() {
+const CardList = ({ id, label, items }: any) => {
   return (
-    <div className="flex m-12 flex-col gap-2">
-      <h2 className="text-xl">Choose one of the demo options</h2>
-      {/* Deepfake Cards */}
-      <h3 className="text-bold">Deepfake Detection Tools</h3>
-      <div className="grid grid-flow-col grid-cols-3">
-        {deepfakeList.map((item) => {
-          let className = "m-6 text-black py-3 px-2";
+    <div className="pt-12">
+      <Label htmlFor={id}>{label}</Label>
+      <div id={id} className="grid grid-flow-col grid-cols-3 mt-auto">
+        {items.map((item: any) => {
+          let className = "m-6 text-black py-3 px-2 h-full";
 
           if (item.link) {
             className += " bg-slate-200 hover:bg-slate-500 hover:text-white";
@@ -89,6 +89,26 @@ export default function Page() {
           );
         })}
       </div>
+    </div>
+  );
+};
+
+export default function Page() {
+  return (
+    <div className="flex m-12 flex-col gap-2">
+      <h2 className="text-xl text-bold">Choose Option Below</h2>
+      {/* Deepfake Cards */}
+      <CardList
+        id="deepfake"
+        label="Deepfake Detection Tools"
+        items={deepfakeList}
+      />
+      {/* Misinformation Cards */}
+      <CardList
+        id="misinfo"
+        label="Verity - Disinformation Detection Tools"
+        items={verityList}
+      />
     </div>
   );
 }
