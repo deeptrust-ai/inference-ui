@@ -66,26 +66,28 @@ const CardList = ({ id, label, items }: any) => {
           }
 
           return (
-            <ConditionalWrapper
-              condition={item.link}
-              wrapper={(children: any) => (
-                <Link href={item.link || ""}>{children}</Link>
-              )}
-            >
-              <Card className={className} key={item.title}>
-                <CardHeader>
-                  <CardTitle>{item.title}</CardTitle>
-                  {!item.link && (
-                    <CardDescription className="text-black">
-                      Coming Soon
-                    </CardDescription>
-                  )}
-                </CardHeader>
-                <CardContent>
-                  <p>{item.desc}</p>
-                </CardContent>
-              </Card>
-            </ConditionalWrapper>
+            <div key={item.title}>
+              <ConditionalWrapper
+                condition={item.link}
+                wrapper={(children: any) => (
+                  <Link href={item.link || ""}>{children}</Link>
+                )}
+              >
+                <Card className={className} key={item.title}>
+                  <CardHeader>
+                    <CardTitle>{item.title}</CardTitle>
+                    {!item.link && (
+                      <CardDescription className="text-black">
+                        Coming Soon
+                      </CardDescription>
+                    )}
+                  </CardHeader>
+                  <CardContent>
+                    <p>{item.desc}</p>
+                  </CardContent>
+                </Card>
+              </ConditionalWrapper>
+            </div>
           );
         })}
       </div>
