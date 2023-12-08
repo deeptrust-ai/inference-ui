@@ -51,7 +51,15 @@ const verityList: ItemType[] = [
 const ConditionalWrapper = ({ condition, wrapper, children }: any) =>
   condition ? wrapper(children) : children;
 
-const CardList = ({ id, label, items }: any) => {
+const CardList = ({
+  id,
+  label,
+  items,
+}: {
+  id: string;
+  label: string;
+  items: ItemType[];
+}) => {
   return (
     <div className="pt-12">
       <Label htmlFor={id}>{label}</Label>
