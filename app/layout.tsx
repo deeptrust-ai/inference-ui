@@ -2,13 +2,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import { AuthProvider } from "@propelauth/react";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import NavBar from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
-
-const { REACT_APP_AUTH_URL } = process.env;
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,22 +29,14 @@ export default function RootLayout({
         data-instametrics-server-url="https://nextjs-with-supabase-five-kappa.vercel.app"
         data-instametrics-script-id="2d797a42-4472-4728-abb7-bd320328990c"
       ></script>
-      {/* body */}
-
       <body className={inter.className}>
-        {REACT_APP_AUTH_URL != undefined ? (
-          <AuthProvider authUrl={REACT_APP_AUTH_URL}>
-            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-              <NavBar />
-              <Spot />
-              <Toaster />
-              {children}
-            </ThemeProvider>
-            <Analytics />
-          </AuthProvider>
-        ) : (
-          <div>REACT_APP_AUTH_URL is missing</div>
-        )}
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <NavBar />
+          <Spot />
+          <Toaster />
+          {children}
+        </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
