@@ -8,10 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+// auth
+import {
+  RequiredAuthProvider,
+  RedirectToLogin,
+  withAuthInfo,
+} from "@propelauth/react";
+
 // components
-import Section from "@/components/Section";
 import Link from "next/link";
 import { Label } from "@radix-ui/react-label";
+import { Loader2 } from "lucide-react";
 
 type ItemType = { title: string; link?: string; desc?: string };
 
@@ -103,22 +110,24 @@ const CardList = ({
   );
 };
 
+const CardMenu = withAuthInfo((props) => (
+  <div className="flex m-12 flex-col gap-2">
+    <h2 className="text-xl text-bold">Choose Option Below</h2>
+    {/* Deepfake Cards */}
+    <CardList
+      id="deepfake"
+      label="Deepfake Detection Tools"
+      items={deepfakeList}
+    />
+    {/* Misinformation Cards */}
+    <CardList
+      id="misinfo"
+      label="Verity - Disinformation Detection Tools"
+      items={verityList}
+    />
+  </div>
+));
+
 export default function Page() {
-  return (
-    <div className="flex m-12 flex-col gap-2">
-      <h2 className="text-xl text-bold">Choose Option Below</h2>
-      {/* Deepfake Cards */}
-      <CardList
-        id="deepfake"
-        label="Deepfake Detection Tools"
-        items={deepfakeList}
-      />
-      {/* Misinformation Cards */}
-      <CardList
-        id="misinfo"
-        label="Verity - Disinformation Detection Tools"
-        items={verityList}
-      />
-    </div>
-  );
+  return <CardMenu />;
 }
