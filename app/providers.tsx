@@ -1,4 +1,5 @@
 "use client";
+import { Loading } from "@/components/loading";
 // auth
 import { RequiredAuthProvider, RedirectToLogin } from "@propelauth/react";
 
@@ -8,7 +9,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return process.env.NEXT_PUBLIC_AUTH_URL ? (
     <RequiredAuthProvider
       authUrl={process.env.NEXT_PUBLIC_AUTH_URL}
-      displayWhileLoading={<Loader2 className="animate-spin" />}
+      displayWhileLoading={<Loading />}
       displayIfLoggedOut={<RedirectToLogin />}
     >
       {children}
