@@ -19,6 +19,7 @@ import Heatmap from "./job/Heatmap";
 const EXAMPLE_DATA = [1, 1, 0.1, 0.2, 0.5, 0.6, 1, 1, 1, 0.8];
 
 interface IAudioCard {
+  id: number;
   fileName: string; //
   date: string; //
   score: number;
@@ -27,24 +28,28 @@ interface IAudioCard {
 
 const EXAMPLES: IAudioCard[] = [
   {
+    id: 0,
     fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
     date: "December 04, 2023 11:12 PM",
     score: 82,
     heatmapData: EXAMPLE_DATA,
   },
   {
+    id: 1,
     fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
     date: "December 04, 2023 11:12 PM",
     score: 55,
     heatmapData: EXAMPLE_DATA,
   },
   {
+    id: 3,
     fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
     date: "December 04, 2023 11:12 PM",
     score: 11,
     heatmapData: EXAMPLE_DATA,
   },
   {
+    id: 4,
     fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
     date: "December 04, 2023 11:12 PM",
     score: 11,
@@ -79,7 +84,7 @@ const AudioJobs = ({ jobs }: { jobs: IAudioCard[] }) => (
         <h2 className="text-lg font-semibold mb-4">Results</h2>
         <div className="flex flex-col gap-2">
           {jobs.map((job) => (
-            <AudioCard {...job} />
+            <AudioCard key={job.fileName} {...job} />
           ))}
         </div>
       </div>
