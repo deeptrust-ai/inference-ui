@@ -14,82 +14,133 @@ import {
   Table,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import Heatmap from "./job/Heatmap";
+
+const EXAMPLE_DATA = [1, 1, 0.1, 0.2, 0.5, 0.6, 1, 1, 1, 0.8];
+
+interface IAudioCard {
+  fileName: string; //
+  date: string; //
+  score: number;
+  heatmapData?: number[];
+}
+
+const EXAMPLES: IAudioCard[] = [
+  {
+    fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
+    date: "December 04, 2023 11:12 PM",
+    score: 82,
+    heatmapData: EXAMPLE_DATA,
+  },
+  {
+    fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
+    date: "December 04, 2023 11:12 PM",
+    score: 55,
+    heatmapData: EXAMPLE_DATA,
+  },
+  {
+    fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
+    date: "December 04, 2023 11:12 PM",
+    score: 11,
+    heatmapData: EXAMPLE_DATA,
+  },
+  {
+    fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
+    date: "December 04, 2023 11:12 PM",
+    score: 11,
+    // heatmapData: EXAMPLE_DATA,
+  },
+];
+
+const AudioInput = () => (
+  <div className="border-r bg-gray-600/40 dark:bg-gray-800/40 rounded-lg shadow-lg">
+    <div className="flex flex-col gap-4 p-4">
+      <h1 className="font-semibold text-lg md:text-2xl">Speech Input</h1>
+      <div className="grid w-full items-center gap-3">
+        <Label htmlFor="audio-upload">Upload Audio</Label>
+        <Input
+          aria-label="Upload audio"
+          className="border-gray-300 shadow-sm rounded-lg"
+          id="audio-upload"
+          type="file"
+        />
+      </div>
+      <hr className="my-4" />
+      <Button className="w-full">Detect</Button>
+    </div>
+  </div>
+);
+
+const AudioJobs = ({ jobs }: { jobs: IAudioCard[] }) => (
+  <div className="flex flex-col gap-4 ">
+    <h1 className="font-semibold text-lg md:text-2xl">Speech Analysis Jobs</h1>
+    <div className="border shadow-sm rounded-lg">
+      <div className="flex flex-col w-full p-4 rounded-lg shadow">
+        <h2 className="text-lg font-semibold mb-4">Results</h2>
+        <div className="flex flex-col gap-2">
+          {jobs.map((job) => (
+            <AudioCard {...job} />
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const AudioCard = ({ fileName, date, score, heatmapData }: IAudioCard) => {
+  const scoreToMeta = (score: number) => {
+    if (score < 50) {
+      return ["bg-green-600", "No generated speech detected!", "Real"];
+    } else if (score > 80) {
+      return ["bg-red-600", "Generated speech detected!", "Fake"];
+    } else {
+      return [
+        "bg-orange-600",
+        "Catching patterns of generated speech.",
+        "Caution",
+      ];
+    }
+  };
+
+  const [color, message, scoreType] = scoreToMeta(score);
+
+  return (
+    <div className="flex flex-col gap-2 bg-slate-400 drop-shadow-md p-2 rounded">
+      <div className="flex items-center justify-between">
+        {/* Metadata */}
+        {/* Title */}
+        <div className="flex flex-col">
+          <h3 className="font-semibold">
+            {fileName}
+            {color}
+          </h3>
+          <p className="text-xs text-gray-800">{date}</p>
+        </div>
+        {/* Badge/Score */}
+        <div className="flex gap-2">
+          <Badge className={`${color}`} variant="secondary">
+            {scoreType}
+          </Badge>
+          <span className="font-semibold">{score}%</span>
+        </div>
+      </div>
+      {/* Heatmap */}
+      <div className="w-full">
+        {heatmapData ? (
+          <Heatmap data={heatmapData} />
+        ) : (
+          <p className="text-xs text-gray-800">Job Processing...</p>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export function AudioDashboard() {
   return (
     <div className="grid w-full lg:min-h-[calc(100vh-70px)] lg:grid-cols-[300px,1fr] gap-4 p-6">
-      <div className="border-r bg-gray-100/40 dark:bg-gray-800/40 rounded-lg shadow-lg">
-        <div className="flex flex-col gap-4 p-4">
-          <h1 className="font-semibold text-lg md:text-2xl">Audio Input</h1>
-          <div className="grid w-full items-center gap-2">
-            <Label htmlFor="audio-upload">Upload Audio</Label>
-            <Input
-              aria-label="Upload audio"
-              className="border-gray-300 shadow-sm rounded-lg"
-              id="audio-upload"
-              type="file"
-            />
-          </div>
-          <hr className="my-4" />
-        </div>
-      </div>
-      <div className="flex flex-col gap-4">
-        <h1 className="font-semibold text-lg md:text-2xl">Audio Jobs</h1>
-        <div className="border shadow-sm rounded-lg">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[80px]">Job ID</TableHead>
-                <TableHead className="max-w-[150px]">Audio Title</TableHead>
-                <TableHead className="hidden md:table-cell">Status</TableHead>
-                <TableHead className="hidden md:table-cell">Duration</TableHead>
-                <TableHead>Uploaded</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>001</TableCell>
-                <TableCell className="font-medium">Audio 1</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  <Badge className="py-1 px-2 bg-green-200 text-green-800 rounded-full">
-                    Completed
-                  </Badge>
-                </TableCell>
-                <TableCell>3:20</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  Dec 12, 2023
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>002</TableCell>
-                <TableCell className="font-medium">Audio 2</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  <Badge className="py-1 px-2 bg-yellow-200 text-yellow-800 rounded-full">
-                    Processing
-                  </Badge>
-                </TableCell>
-                <TableCell>4:56</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  Dec 12, 2023
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>003</TableCell>
-                <TableCell className="font-medium">Audio 3</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  <Badge className="py-1 px-2 bg-red-200 text-red-800 rounded-full">
-                    Failed
-                  </Badge>
-                </TableCell>
-                <TableCell>2:45</TableCell>
-                <TableCell className="hidden md:table-cell">
-                  Dec 11, 2023
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </div>
-      </div>
+      <AudioInput />
+      <AudioJobs jobs={EXAMPLES} />
     </div>
   );
 }
