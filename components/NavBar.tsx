@@ -16,7 +16,7 @@ const LogoutButton = () => {
 export default function NavBar() {
   const authInfo = useAuthInfo();
   return (
-    <div className="p-6">
+    <div className="flex p-6 justify-between">
       <Link href={"/"}>
         <Logo width={100} height={24} />
       </Link>
