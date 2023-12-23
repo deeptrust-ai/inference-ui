@@ -212,7 +212,12 @@ const JobCard = (props: JobCardProps) => {
           ) : (
             <p>Waiting for job to complete...</p>
           )}
-          <Heatmap data={segmented} />
+          <div className="mt-6">
+            <h2>
+              <b>Heatmap</b>
+            </h2>
+            <Heatmap data={segmented} />
+          </div>
         </CardContent>
         <CardFooter className="gap-2">
           <Badge className="hidden sm:block" variant={"outline"}>
