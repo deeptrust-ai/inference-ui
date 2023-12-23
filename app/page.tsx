@@ -129,15 +129,5 @@ const CardMenu = withAuthInfo((props) => (
 ));
 
 export default function Page() {
-  return process.env.NEXT_PUBLIC_AUTH_URL ? (
-    <RequiredAuthProvider
-      authUrl={process.env.NEXT_PUBLIC_AUTH_URL}
-      displayWhileLoading={<Loader2 className="animate-spin" />}
-      displayIfLoggedOut={<RedirectToLogin />}
-    >
-      <CardMenu />
-    </RequiredAuthProvider>
-  ) : (
-    <div>Server Error: NEXT_PUBLIC_AUTH_URL not found. Needed to set auth.</div>
-  );
+  return <CardMenu />;
 }

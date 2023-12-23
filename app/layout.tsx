@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 
+import Providers from "./providers";
+
 import { ThemeProvider } from "@/components/theme-provider";
 import NavBar from "@/components/NavBar";
 import { Toaster } from "@/components/ui/toaster";
@@ -31,10 +33,12 @@ export default function RootLayout({
       ></script>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <NavBar />
-          <Spot />
-          <Toaster />
-          {children}
+          <Providers>
+            <NavBar />
+            <Spot />
+            <Toaster />
+            {children}
+          </Providers>
         </ThemeProvider>
         <Analytics />
       </body>
