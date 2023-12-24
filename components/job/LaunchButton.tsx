@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 
+import { useAuthInfo } from "@propelauth/react";
+
 // ui
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
@@ -12,6 +14,9 @@ import { Loader2 } from "lucide-react";
 const LaunchButton = (props: JobProps & { className: string }) => {
   const { className, type, setJobsState, input } = props;
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { accessToken } = useAuthInfo();
+
   // launch toast
   const { toast } = useToast();
 
@@ -63,6 +68,7 @@ const LaunchButton = (props: JobProps & { className: string }) => {
     setLoading(false);
   };
 
+  const headers = { Authorization: `Bearer ${accessToken}` };
   const launchJobFile = async () => {
     if (!(input instanceof File)) return;
     const body = new FormData();
@@ -73,6 +79,7 @@ const LaunchButton = (props: JobProps & { className: string }) => {
     const url = "/edge/job";
     const options = {
       method: "POST",
+      headers,
       body,
     };
     const res = await fetch(url, options);
@@ -85,7 +92,7 @@ const LaunchButton = (props: JobProps & { className: string }) => {
     if (input == null) return;
     // TODO: Add non-twitter URLs
     const url = `/edge/job?url=${input}`;
-    const response = await fetch(url);
+    const response = await fetch(url, { headers });
     const data = await response.json();
 
     return data;

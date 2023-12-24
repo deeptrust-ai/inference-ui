@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
+      Authorization: request.headers.get("Authorization"),
     },
   };
 
@@ -50,7 +51,7 @@ export async function GET(request: NextRequest) {
   }
 
   const url = apiURLPrefix + "twitter/job?url=" + audioURL;
-  const response = await fetch(url);
+  const response = await fetch(url, { headers: request.headers });
   const data = await response.json();
 
   return NextResponse.json(data);
