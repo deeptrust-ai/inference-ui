@@ -12,8 +12,12 @@ export async function GET(
 ) {
   const { id } = params;
   const url = apiURLPrefix + `job/${id}`;
+  const auth = request.headers.get("Authorization");
+  if (!auth) return; // for ts rules
 
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    headers: { Authorization: auth },
+  });
   if (res.status == 202) {
     const output: JobOutput = {
       message: "Job not finished.",

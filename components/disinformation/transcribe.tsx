@@ -1,6 +1,11 @@
-const transcribe = async (reqURL: string): Promise<(string | null)[]> => {
+const transcribe = async (
+  reqURL: string,
+  accessToken: string
+): Promise<(string | null)[]> => {
   try {
-    const res = await fetch("/edge/transcribe" + reqURL);
+    const res = await fetch("/edge/transcribe" + reqURL, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
     const data = await res.json();
     return [data.output, null];
   } catch (err: any) {
