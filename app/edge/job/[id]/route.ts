@@ -13,7 +13,7 @@ export async function GET(
   const { id } = params;
   const url = apiURLPrefix + `job/${id}`;
 
-  const res = await fetch(url);
+  const res = await fetch(url, { headers: request.headers });
   if (res.status == 202) {
     const output: JobOutput = {
       message: "Job not finished.",
