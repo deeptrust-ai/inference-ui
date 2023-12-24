@@ -63,6 +63,7 @@ const DisinForm = ({ transcibeURL }: IForm) => {
     if (newValue == "") return;
     setTextInputValue(newValue);
     if (transcibeURL) {
+      if (!accessToken) return; // added for ts rules
       setIsTranscribing(true);
       const [output, err] = await transcribe(
         transcibeURL + `?url=${newValue}`,
