@@ -11,6 +11,9 @@ export async function GET(request: NextRequest) {
   const tweetURL = searchParams.get("url");
   const tweetID = searchParams.get("tweetID");
 
+  const auth = request.headers.get("Authorization");
+  if (!auth) return; // for ts rules
+
   if (tweetURL) {
     console.log(`Transcribing (${tweetURL})...`);
     reqURL.searchParams.append("url", tweetURL);
@@ -23,7 +26,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const response = await fetch(reqURL, { headers: request.headers });
+    const response = await fetch(reqURL, { headers: { Authorization: auth } });
     const data = await response.json();
 
     return NextResponse.json(data);
