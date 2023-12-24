@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
+
+import { useAuthInfo } from "@propelauth/react";
 import { useChat } from "ai/react";
 
 // ui
@@ -40,6 +42,8 @@ const DisinForm = ({ transcibeURL }: IForm) => {
   const [errorMessage, setErrorMessage] = useState<string | null>("");
   const [isTranscribing, setIsTranscribing] = useState<boolean>(false);
 
+  const { accessToken } = useAuthInfo();
+
   let type = "transcription";
   if (transcibeURL) {
     type = "url";
@@ -60,7 +64,10 @@ const DisinForm = ({ transcibeURL }: IForm) => {
     setTextInputValue(newValue);
     if (transcibeURL) {
       setIsTranscribing(true);
-      const [output, err] = await transcribe(transcibeURL + `?url=${newValue}`);
+      const [output, err] = await transcribe(
+        transcibeURL + `?url=${newValue}`,
+        accessToken
+      );
       setIsTranscribing(false);
 
       if (!output) {

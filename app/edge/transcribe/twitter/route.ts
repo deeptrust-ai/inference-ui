@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const response = await fetch(reqURL);
+    const response = await fetch(reqURL, { headers: request.headers });
     const data = await response.json();
 
     return NextResponse.json(data);
