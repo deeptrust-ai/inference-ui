@@ -18,15 +18,15 @@ import Heatmap from "./job/Heatmap";
 
 const EXAMPLE_DATA = [1, 1, 0.1, 0.2, 0.5, 0.6, 1, 1, 1, 0.8];
 
-interface IAudioCard {
+interface IAudioJob {
   id: string;
   fileName: string; //
   date: string; //
-  score: number;
+  score?: number;
   heatmapData?: number[];
 }
 
-const EXAMPLES: IAudioCard[] = [
+const EXAMPLES: IAudioJob[] = [
   {
     id: "job-0",
     fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
@@ -52,7 +52,14 @@ const EXAMPLES: IAudioCard[] = [
     id: "job-4",
     fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
     date: "December 04, 2023 11:12 PM",
-    score: 11,
+    // score: 11,
+    // heatmapData: EXAMPLE_DATA,
+  },
+  {
+    id: "job-5",
+    fileName: "call-log-4e6c4a59-393a-435e-bc00-8bdc95d48dec.wav",
+    date: "December 04, 2023 11:12 PM",
+    // score: 11,
     // heatmapData: EXAMPLE_DATA,
   },
 ];
@@ -76,23 +83,56 @@ const AudioInput = () => (
   </div>
 );
 
-const AudioJobs = ({ jobs }: { jobs: IAudioCard[] }) => (
-  <div className="flex flex-col gap-4 ">
-    <h1 className="font-semibold text-lg md:text-2xl">Speech Analysis Jobs</h1>
-    <div className="border shadow-sm rounded-lg bg-gray-600/40 dark:bg-gray-800/40 ">
-      <div className="flex flex-col w-full p-4 rounded-lg shadow">
-        <h2 className="text-lg font-semibold mb-4">Results</h2>
-        <div className="flex flex-col gap-2">
-          {jobs.map((job) => (
-            <AudioCard key={job.fileName} {...job} />
-          ))}
+const AudioJobs = ({ jobs }: { jobs: IAudioJob[] }) => {
+  const completedJobs = jobs.filter((e) => e.score && e.heatmapData);
+  const runningJobs = jobs.filter((e) => !e.score || !e.heatmapData);
+  return (
+    <div className="flex flex-col gap-4 ">
+      <h1 className="font-semibold text-lg md:text-2xl">
+        Speech Analysis Jobs
+      </h1>
+      {/* Completed Jobs */}
+      <div className="border shadow-sm rounded-lg bg-gray-600/40 dark:bg-gray-800/40 ">
+        <div className="flex flex-col w-full p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-4">Results</h2>
+          <div className="flex flex-col gap-2">
+            {completedJobs.map((job) => (
+              <CompletedJobCard key={job.fileName} {...job} />
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Running Jobs */}
+      <div className="border shadow-sm rounded-lg bg-gray-600/40 dark:bg-gray-800/40 ">
+        <div className="flex flex-col w-full p-4 rounded-lg shadow">
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="running">
+              <AccordionTrigger>
+                <h2 className="text-lg font-semibold mb-4">Running Jobs</h2>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col gap-2">
+                  {runningJobs.map((job) => (
+                    <RunningJobCard key={job.fileName} {...job} />
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
-const AudioCard = ({ id, fileName, date, score, heatmapData }: IAudioCard) => {
+const CompletedJobCard = ({
+  id,
+  fileName,
+  date,
+  score,
+  heatmapData,
+}: IAudioJob) => {
+  if (!score || !heatmapData) return;
   const scoreToMeta = (score: number) => {
     if (score < 50) {
       return ["bg-green-600", "No generated speech detected!", "Real"];
@@ -150,6 +190,23 @@ const AudioCard = ({ id, fileName, date, score, heatmapData }: IAudioCard) => {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+    </div>
+  );
+};
+
+const RunningJobCard = ({ id, fileName, date }: IAudioJob) => {
+  return (
+    <div className="flex flex-col gap-2 bg-slate-400 drop-shadow-2xl shadow-2xl p-2 rounded">
+      <div className="flex items-center justify-between">
+        <div className="flex justify-between items-center w-full">
+          <div className="flex gap-2">
+            <h3 className="font-semibold">Job ID:</h3>
+            <Badge>{id}</Badge>
+          </div>
+          <span className="text-xs text-gray-800">{fileName}</span>
+          <span className="text-xs text-gray-800">{date}</span>
+        </div>
+      </div>
     </div>
   );
 };
