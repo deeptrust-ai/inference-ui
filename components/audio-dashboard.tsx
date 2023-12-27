@@ -128,7 +128,7 @@ const AudioJobs = ({ jobs }: { jobs: IAudioJob[] }) => {
               <CompletedJobCard key={job.fileName} {...job} />
             ))}
           </div> */}
-          <CompleteTable completedJobs={completedJobs} />
+          <CompletedJobsTable completedJobs={completedJobs} />
         </div>
       </div>
       {/* Running Jobs */}
@@ -140,11 +140,7 @@ const AudioJobs = ({ jobs }: { jobs: IAudioJob[] }) => {
                 <h2 className="text-lg font-semibold mb-4">Running Jobs</h2>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-col gap-2">
-                  {runningJobs.map((job) => (
-                    <RunningJobCard key={job.fileName} {...job} />
-                  ))}
-                </div>
+                <RunningJobsTable runningJobs={runningJobs} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -234,29 +230,31 @@ const AudioTables = ({ jobs }: { jobs: IAudioJob[] }) => {
   return <div></div>;
 };
 
-const CompleteTable = ({ completedJobs }: { completedJobs: IAudioJob[] }) => {
-  return (
-    <Table className="border rounded-lg">
-      <TableCaption>Completed Speech Detection Jobs</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">Job ID</TableHead>
-          <TableCell>File Name</TableCell>
-          <TableCell>Score</TableCell>
-          <TableCell>Status</TableCell>
-          <TableCell className="text-right">Date Launched</TableCell>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {completedJobs.map((job) => (
-          <CompletedRow {...job} />
-        ))}
-      </TableBody>
-    </Table>
-  );
-};
+const CompletedJobsTable = ({
+  completedJobs,
+}: {
+  completedJobs: IAudioJob[];
+}) => (
+  <Table className="border rounded-lg">
+    <TableCaption>Completed Speech Detection Jobs</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead className="w-[100px]">Job ID</TableHead>
+        <TableCell>File Name</TableCell>
+        <TableCell>Score</TableCell>
+        <TableCell>Status</TableCell>
+        <TableCell className="text-right">Date Launched</TableCell>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {completedJobs.map((job) => (
+        <CompletedJobRow {...job} />
+      ))}
+    </TableBody>
+  </Table>
+);
 
-const CompletedRow = ({
+const CompletedJobRow = ({
   id,
   fileName,
   date,
@@ -284,6 +282,28 @@ const CompletedRow = ({
     </>
   );
 };
+
+const RunningJobsTable = ({ runningJobs }: { runningJobs: IAudioJob[] }) => (
+  <Table className="border rounded-lg">
+    <TableCaption>Running Speech Detection Jobs</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead className="w-[100px]">Job ID</TableHead>
+        <TableCell>File Name</TableCell>
+        <TableCell className="text-right">Date Launched</TableCell>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {runningJobs.map((job) => (
+        <TableRow>
+          <TableCell>{job.id}</TableCell>
+          <TableCell>{job.fileName}</TableCell>
+          <TableCell className="text-right">{job.date}</TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+);
 
 const HoverBadge = ({ score }: { score: number }) => {
   const [color, message, scoreType] = scoreToMeta(score);
