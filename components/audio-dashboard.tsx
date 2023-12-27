@@ -8,6 +8,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  TableHead,
+  TableRow,
+  TableHeader,
+  TableCell,
+  TableBody,
+  Table,
+  TableCaption,
+} from "@/components/ui/table";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -64,6 +78,20 @@ const EXAMPLES: IAudioJob[] = [
   },
 ];
 
+const scoreToMeta = (score: number) => {
+  if (score < 50) {
+    return ["bg-green-600", "No generated speech detected!", "Real"];
+  } else if (score > 80) {
+    return ["bg-red-600", "Generated speech detected!", "Fake"];
+  } else {
+    return [
+      "bg-orange-600",
+      "Catching patterns of generated speech.",
+      "Caution",
+    ];
+  }
+};
+
 const AudioInput = () => (
   <div className="border-r bg-gray-600/40 dark:bg-gray-800/40 rounded-lg shadow-lg">
     <div className="flex flex-col gap-4 p-4">
@@ -95,11 +123,12 @@ const AudioJobs = ({ jobs }: { jobs: IAudioJob[] }) => {
       <div className="border shadow-sm rounded-lg bg-gray-600/40 dark:bg-gray-800/40 ">
         <div className="flex flex-col w-full p-4 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-4">Results</h2>
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             {completedJobs.map((job) => (
               <CompletedJobCard key={job.fileName} {...job} />
             ))}
-          </div>
+          </div> */}
+          <CompleteTable completedJobs={completedJobs} />
         </div>
       </div>
       {/* Running Jobs */}
@@ -133,19 +162,6 @@ const CompletedJobCard = ({
   heatmapData,
 }: IAudioJob) => {
   if (!score || !heatmapData) return;
-  const scoreToMeta = (score: number) => {
-    if (score < 50) {
-      return ["bg-green-600", "No generated speech detected!", "Real"];
-    } else if (score > 80) {
-      return ["bg-red-600", "Generated speech detected!", "Fake"];
-    } else {
-      return [
-        "bg-orange-600",
-        "Catching patterns of generated speech.",
-        "Caution",
-      ];
-    }
-  };
 
   const [color, message, scoreType] = scoreToMeta(score);
 
@@ -208,6 +224,79 @@ const RunningJobCard = ({ id, fileName, date }: IAudioJob) => {
         </div>
       </div>
     </div>
+  );
+};
+
+const AudioTables = ({ jobs }: { jobs: IAudioJob[] }) => {
+  const completedJobs = jobs.filter((e) => e.score && e.heatmapData);
+  const runningJobs = jobs.filter((e) => !e.score || !e.heatmapData);
+
+  return <div></div>;
+};
+
+const CompleteTable = ({ completedJobs }: { completedJobs: IAudioJob[] }) => {
+  return (
+    <Table className="border rounded-lg">
+      <TableCaption>Completed Speech Detection Jobs</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Job ID</TableHead>
+          <TableCell>File Name</TableCell>
+          <TableCell>Score</TableCell>
+          <TableCell>Status</TableCell>
+          <TableCell className="text-right">Date Launched</TableCell>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {completedJobs.map((job) => (
+          <CompletedRow {...job} />
+        ))}
+      </TableBody>
+    </Table>
+  );
+};
+
+const CompletedRow = ({
+  id,
+  fileName,
+  date,
+  score,
+  heatmapData,
+}: IAudioJob) => {
+  if (!score || !heatmapData) return;
+
+  return (
+    <>
+      <TableRow key={id}>
+        <TableCell className="font-medium">{id}</TableCell>
+        <TableCell className="text-xs">{fileName}</TableCell>
+        <TableCell>{score}%</TableCell>
+        <TableCell>
+          <HoverBadge score={score} />
+        </TableCell>
+        <TableCell className="text-right">{date}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell colSpan={5} className="bg-slate-700">
+          <Heatmap data={heatmapData} />
+        </TableCell>
+      </TableRow>
+    </>
+  );
+};
+
+const HoverBadge = ({ score }: { score: number }) => {
+  const [color, message, scoreType] = scoreToMeta(score);
+
+  return (
+    <HoverCard>
+      <HoverCardTrigger>
+        <Badge className={`${color}`} variant="secondary">
+          {scoreType}
+        </Badge>
+      </HoverCardTrigger>
+      <HoverCardContent>{message}</HoverCardContent>
+    </HoverCard>
   );
 };
 
