@@ -164,7 +164,7 @@ const CompletedJobsTable = ({
     </TableHeader>
     <TableBody>
       {completedJobs.map((job) => (
-        <CompletedJobRow {...job} />
+        <CompletedJobRow key={job.id} {...job} />
       ))}
     </TableBody>
   </Table>
@@ -211,7 +211,7 @@ const RunningJobsTable = ({ runningJobs }: { runningJobs: IAudioJob[] }) => (
     </TableHeader>
     <TableBody>
       {runningJobs.map((job) => (
-        <TableRow>
+        <TableRow key={job.id}>
           <TableCell>{job.id}</TableCell>
           <TableCell>{job.fileName}</TableCell>
           <TableCell className="text-right">{job.date}</TableCell>
