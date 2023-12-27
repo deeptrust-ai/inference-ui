@@ -111,9 +111,10 @@ const AudioInput = () => (
   </div>
 );
 
-const AudioJobs = ({ jobs }: { jobs: IAudioJob[] }) => {
+const AudioJobTables = ({ jobs }: { jobs: IAudioJob[] }) => {
   const completedJobs = jobs.filter((e) => e.score && e.heatmapData);
   const runningJobs = jobs.filter((e) => !e.score || !e.heatmapData);
+
   return (
     <div className="flex flex-col gap-4 ">
       <h1 className="font-semibold text-lg md:text-2xl">
@@ -123,15 +124,10 @@ const AudioJobs = ({ jobs }: { jobs: IAudioJob[] }) => {
       <div className="border shadow-sm rounded-lg bg-gray-600/40 dark:bg-gray-800/40 ">
         <div className="flex flex-col w-full p-4 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-4">Results</h2>
-          {/* <div className="flex flex-col gap-2">
-            {completedJobs.map((job) => (
-              <CompletedJobCard key={job.fileName} {...job} />
-            ))}
-          </div> */}
           <CompletedJobsTable completedJobs={completedJobs} />
         </div>
       </div>
-      {/* Running Jobs */}
+      {/* RunningJobs */}
       <div className="border shadow-sm rounded-lg bg-gray-600/40 dark:bg-gray-800/40 ">
         <div className="flex flex-col w-full p-4 rounded-lg shadow">
           <Accordion type="single" collapsible className="w-full">
@@ -148,86 +144,6 @@ const AudioJobs = ({ jobs }: { jobs: IAudioJob[] }) => {
       </div>
     </div>
   );
-};
-
-const CompletedJobCard = ({
-  id,
-  fileName,
-  date,
-  score,
-  heatmapData,
-}: IAudioJob) => {
-  if (!score || !heatmapData) return;
-
-  const [color, message, scoreType] = scoreToMeta(score);
-
-  return (
-    <div className="flex flex-col gap-2 bg-slate-400 drop-shadow-2xl shadow-2xl p-2 rounded">
-      <div className="flex items-center justify-between">
-        {/* Metadata */}
-        {/* Title */}
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-2">
-            <h3 className="font-semibold">Job ID:</h3>
-            <Badge>{id}</Badge>
-          </div>
-        </div>
-        {/* Badge/Score */}
-        <div className="flex gap-2">
-          <Badge className={`${color}`} variant="secondary">
-            {scoreType}
-          </Badge>
-          <span className="font-semibold">{score}%</span>
-        </div>
-      </div>
-      <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="text-xs">
-            Click For More Details
-          </AccordionTrigger>
-          <AccordionContent>
-            {/* Heatmap */}
-            <div>
-              <b>Filename:</b>
-              <p className="text-xs text-gray-800">{fileName}</p>
-            </div>
-            <div>
-              <b>Date Launched:</b>{" "}
-              <p className="text-xs text-gray-800">{date}</p>
-            </div>
-            <div className="w-full flex flex-col gap-2">
-              <h3 className="font-bold">Heatmap</h3>
-              {heatmapData && <Heatmap data={heatmapData} />}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
-  );
-};
-
-const RunningJobCard = ({ id, fileName, date }: IAudioJob) => {
-  return (
-    <div className="flex flex-col gap-2 bg-slate-400 drop-shadow-2xl shadow-2xl p-2 rounded">
-      <div className="flex items-center justify-between">
-        <div className="flex justify-between items-center w-full">
-          <div className="flex gap-2">
-            <h3 className="font-semibold">Job ID:</h3>
-            <Badge>{id}</Badge>
-          </div>
-          <span className="text-xs text-gray-800">{fileName}</span>
-          <span className="text-xs text-gray-800">{date}</span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const AudioTables = ({ jobs }: { jobs: IAudioJob[] }) => {
-  const completedJobs = jobs.filter((e) => e.score && e.heatmapData);
-  const runningJobs = jobs.filter((e) => !e.score || !e.heatmapData);
-
-  return <div></div>;
 };
 
 const CompletedJobsTable = ({
@@ -324,7 +240,7 @@ export function AudioDashboard() {
   return (
     <div className="grid w-full lg:min-h-[calc(100vh-70px)] lg:grid-cols-[300px,1fr] gap-4 p-6">
       <AudioInput />
-      <AudioJobs jobs={EXAMPLES} />
+      <AudioJobTables jobs={EXAMPLES} />
     </div>
   );
 }
