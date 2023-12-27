@@ -23,11 +23,9 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
+import AudioInput from "./audio-input";
 import Heatmap from "../job/Heatmap";
 
 const EXAMPLE_DATA = [1, 1, 0.1, 0.2, 0.5, 0.6, 1, 1, 1, 0.8];
@@ -91,25 +89,6 @@ const scoreToMeta = (score: number) => {
     ];
   }
 };
-
-const AudioInput = () => (
-  <div className="border-r bg-gray-600/40 dark:bg-gray-800/40 rounded-lg shadow-lg">
-    <div className="flex flex-col gap-4 p-4">
-      <h1 className="font-semibold text-lg md:text-2xl">Speech Input</h1>
-      <div className="grid w-full items-center gap-3">
-        <Label htmlFor="audio-upload">Upload Audio</Label>
-        <Input
-          aria-label="Upload audio"
-          className="border-gray-300 shadow-sm rounded-lg"
-          id="audio-upload"
-          type="file"
-        />
-      </div>
-      <hr className="my-4" />
-      <Button className="w-full">Detect</Button>
-    </div>
-  </div>
-);
 
 const AudioJobTables = ({ jobs }: { jobs: IAudioJob[] }) => {
   const completedJobs = jobs.filter((e) => e.score && e.heatmapData);
