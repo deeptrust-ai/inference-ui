@@ -1,4 +1,6 @@
-import { AudioDashboard } from "@/components/audio-dashboard";
+import TempAudioDashboard, {
+  AudioDashboard,
+} from "@/components/audio-dashboard";
 
 import { IAudioJob } from "@/types/job";
 
@@ -43,5 +45,6 @@ const EXAMPLES: IAudioJob[] = [
 ];
 
 export default function Page() {
-  return <AudioDashboard jobs={EXAMPLES} />;
+  // return <AudioDashboard jobs={EXAMPLES} />;
+  return <TempAudioDashboard />;
 }
