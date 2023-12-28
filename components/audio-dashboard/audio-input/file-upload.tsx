@@ -5,9 +5,16 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import ErrorAlert from "@/components/ErrorAlert";
+import { useToast } from "@/components/ui/use-toast";
 
-const FileUploadInput = () => {
+// components
+import ErrorAlert from "@/components/ErrorAlert";
+import { Loader2 } from "lucide-react";
+import { Job, JobOutput, Jobs } from "@/types/job";
+import { setJob } from "@/utils/localStorage";
+
+// TODO: Remove props/setJobsState
+const FileUploadInput = (props: any) => {
   const [inputValue, setInput] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,7 +31,7 @@ const FileUploadInput = () => {
         // );
         setInput(file);
       } else {
-        setError("DeepTrust only supports wavfiles at the moment.");
+        setError("DeepTrust only supports .wav and .mp3 files at the moment.");
         setInput(null);
       }
     }
@@ -44,8 +51,93 @@ const FileUploadInput = () => {
         {error && <ErrorAlert msg={error} />}
       </div>
       <hr className="my-4" />
-      <Button className="w-full">Detect</Button>
+      <LaunchJobButton
+        inputValue={inputValue}
+        setJobsState={props.setJobsState}
+      />
     </div>
+  );
+};
+
+const LaunchJobButton = ({
+  inputValue,
+  setJobsState,
+}: {
+  inputValue: File | null;
+  setJobsState: any;
+}) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  // launch toast
+  const { toast } = useToast();
+
+  const launchJob = async () => {
+    if (!(inputValue instanceof File)) return;
+    const body = new FormData();
+    body.append("file", inputValue);
+    body.append("fileName", inputValue.name);
+    // TODO: Add modelType prop
+    body.append("modelType", "ss");
+    const url = "/edge/job";
+    const options = {
+      method: "POST",
+      body,
+    };
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    return data;
+  };
+
+  const handleClick = async () => {
+    if (!inputValue) return;
+    setLoading(true);
+    const data = await launchJob();
+
+    if (data.id) {
+      const output: JobOutput = {
+        message: data.message,
+      };
+      const job: Job = {
+        type: "file",
+        output,
+        status: "started",
+      };
+
+      // set origin metadata
+      job.origin = inputValue.name;
+
+      // set localStorage
+      setJob(data.id, job);
+
+      const updatedValue = { [data.id]: job };
+      // TODO: Remind sJS and setup for audio-dashboard
+      setJobsState((currentJobs: Jobs) => ({
+        ...currentJobs,
+        ...updatedValue,
+      }));
+
+      // dispatch Toast
+      toast({
+        title: "Job Launched!",
+        description: `The deepfake analysis should be done in a few minutes...`,
+      });
+    } else {
+      // TODO: Add setErrMsg here
+      console.error("Launch failed");
+    }
+    setLoading(false);
+  };
+
+  return (
+    <Button
+      className="w-full"
+      disabled={!inputValue || loading}
+      onClick={handleClick}
+    >
+      <div className="flex flex-row gap-2 items-center">
+        Detect {loading && <Loader2 className="animate-spin" />}
+      </div>
+    </Button>
   );
 };
 
