@@ -12,6 +12,7 @@ import ErrorAlert from "@/components/ErrorAlert";
 import { Loader2 } from "lucide-react";
 import { Job, JobOutput, Jobs } from "@/types/job";
 import { setJob } from "@/utils/localStorage";
+import { useAuthInfo } from "@propelauth/react";
 
 // TODO: Remove props/setJobsState
 const FileUploadInput = (props: any) => {
@@ -69,6 +70,7 @@ const LaunchJobButton = ({
   const [loading, setLoading] = useState<boolean>(false);
   // launch toast
   const { toast } = useToast();
+  const { accessToken } = useAuthInfo();
 
   const launchJob = async () => {
     if (!(inputValue instanceof File)) return;
@@ -78,9 +80,11 @@ const LaunchJobButton = ({
     // TODO: Add modelType prop
     body.append("modelType", "ss");
     const url = "/edge/job";
+    const headers = { Authorization: `Bearer ${accessToken}` };
     const options = {
       method: "POST",
       body,
+      headers,
     };
     const res = await fetch(url, options);
     const data = await res.json();
