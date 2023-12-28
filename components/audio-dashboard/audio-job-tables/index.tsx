@@ -16,10 +16,10 @@ import { IAudioJob } from "@/types/job";
 // TODO: Remove setJobState
 const AudioJobTables = ({
   jobs,
-  setJobState,
+  setJobsState,
 }: {
   jobs: IAudioJob[];
-  setJobState: any;
+  setJobsState: any;
 }) => {
   const completedJobs = jobs.filter((e) => e.score && e.heatmapData);
   const runningJobs = jobs.filter((e) => !e.score || !e.heatmapData);
@@ -41,7 +41,7 @@ const AudioJobTables = ({
               <AccordionContent>
                 <RunningJobsTable
                   runningJobs={runningJobs}
-                  setJobState={setJobState}
+                  setJobsState={setJobsState}
                 />
               </AccordionContent>
             </AccordionItem>
@@ -60,6 +60,3 @@ const AudioJobTables = ({
 };
 
 export default AudioJobTables;
-function useState<T>(arg0: boolean): [any, any] {
-  throw new Error("Function not implemented.");
-}

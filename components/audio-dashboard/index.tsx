@@ -38,7 +38,7 @@ export function AudioDashboard({
   return (
     <div className="grid w-full lg:min-h-[calc(100vh-70px)] lg:grid-cols-[300px,1fr] gap-4 p-6">
       <AudioInput setJobsState={setJobsState} />
-      <AudioJobTables jobs={jobs} setJobState={setJobsState} />
+      <AudioJobTables jobs={jobs} setJobsState={setJobsState} />
     </div>
   );
 }

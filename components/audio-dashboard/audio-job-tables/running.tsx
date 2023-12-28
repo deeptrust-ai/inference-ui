@@ -13,16 +13,16 @@ import {
 } from "@/components/ui/table";
 
 // types
-import { IAudioJob, Job } from "@/types/job";
+import { IAudioJob, Job, Jobs } from "@/types/job";
 import { setJob } from "@/utils/localStorage";
 
 // TODO: Remove setJobState
 const RunningJobsTable = ({
   runningJobs,
-  setJobState,
+  setJobsState,
 }: {
   runningJobs: IAudioJob[];
-  setJobState: any;
+  setJobsState: any;
 }) => {
   const { accessToken } = useAuthInfo();
 
@@ -41,7 +41,11 @@ const RunningJobsTable = ({
           type: "file",
         };
         setJob(job.id, newJob);
-        setJobState(newJob);
+        const updatedValue = { [job.id]: newJob };
+        setJobsState((currentJobs: Jobs) => ({
+          ...currentJobs,
+          ...updatedValue,
+        }));
       }
     });
   };
