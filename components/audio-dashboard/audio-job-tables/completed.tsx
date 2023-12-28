@@ -38,7 +38,7 @@ const CompletedJobsTable = ({
       </TableRow>
     </TableHeader>
     <TableBody>
-      {completedJobs.toReversed().map((job) => (
+      {completedJobs.map((job) => (
         <CompletedJobRow key={job.id} {...job} />
       ))}
     </TableBody>
