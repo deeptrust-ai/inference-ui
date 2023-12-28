@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 
+import { useAuthInfo } from "@propelauth/react";
+
 // shadcn
 import { Badge } from "@/components/ui/badge";
 import {
@@ -49,6 +51,8 @@ const JobCard = (props: JobCardProps) => {
   const [job, setJobState] = useState<Job>(defaultJob);
   const [timeAgo, setTimeAgo] = useState<Date>();
 
+  const { accessToken } = useAuthInfo();
+
   const handleNewJobOutput = (newJobOutput: JobOutput) => {
     if (newJobOutput.scores != null) {
       const newJob: Job = {
@@ -63,7 +67,9 @@ const JobCard = (props: JobCardProps) => {
 
   const poll = async () => {
     setLoading(true);
-    const pollResult = await fetch(`/edge/job/${jobID}`);
+    const pollResult = await fetch(`/edge/job/${jobID}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
     const newJobOutput = await pollResult.json();
 
     handleNewJobOutput(newJobOutput);
