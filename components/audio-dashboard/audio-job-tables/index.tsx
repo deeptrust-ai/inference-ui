@@ -13,7 +13,14 @@ import RunningJobsTable from "./running";
 // types
 import { IAudioJob } from "@/types/job";
 
-const AudioJobTables = ({ jobs }: { jobs: IAudioJob[] }) => {
+// TODO: Remove setJobState
+const AudioJobTables = ({
+  jobs,
+  setJobState,
+}: {
+  jobs: IAudioJob[];
+  setJobState: any;
+}) => {
   const completedJobs = jobs.filter((e) => e.score && e.heatmapData);
   const runningJobs = jobs.filter((e) => !e.score || !e.heatmapData);
 
@@ -22,13 +29,7 @@ const AudioJobTables = ({ jobs }: { jobs: IAudioJob[] }) => {
       <h1 className="font-semibold text-lg md:text-2xl">
         Speech Analysis Jobs
       </h1>
-      {/* Completed Jobs */}
-      <div className="border shadow-sm rounded-lg bg-gray-600/40 dark:bg-gray-800/40 ">
-        <div className="flex flex-col w-full p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">Results</h2>
-          <CompletedJobsTable completedJobs={completedJobs} />
-        </div>
-      </div>
+
       {/* RunningJobs */}
       <div className="border shadow-sm rounded-lg bg-gray-600/40 dark:bg-gray-800/40 ">
         <div className="flex flex-col w-full p-4 rounded-lg shadow">
@@ -38,10 +39,20 @@ const AudioJobTables = ({ jobs }: { jobs: IAudioJob[] }) => {
                 <h2 className="text-lg font-semibold mb-4">Running Jobs</h2>
               </AccordionTrigger>
               <AccordionContent>
-                <RunningJobsTable runningJobs={runningJobs} />
+                <RunningJobsTable
+                  runningJobs={runningJobs}
+                  setJobState={setJobState}
+                />
               </AccordionContent>
             </AccordionItem>
           </Accordion>
+        </div>
+      </div>
+      {/* Completed Jobs */}
+      <div className="border shadow-sm rounded-lg bg-gray-600/40 dark:bg-gray-800/40 ">
+        <div className="flex flex-col w-full p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-4">Results</h2>
+          <CompletedJobsTable completedJobs={completedJobs} />
         </div>
       </div>
     </div>
@@ -49,3 +60,6 @@ const AudioJobTables = ({ jobs }: { jobs: IAudioJob[] }) => {
 };
 
 export default AudioJobTables;
+function useState<T>(arg0: boolean): [any, any] {
+  throw new Error("Function not implemented.");
+}
