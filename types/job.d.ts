@@ -26,4 +26,12 @@ interface JobProps {
   setInput: Dispatch<SetStateAction<JobProps["input"]>>;
 }
 
-export type { Job, Jobs, JobOutput, JobType, JobProps };
+interface IAudioJob {
+  id: string;
+  fileName: string; //
+  date: string; //
+  score?: number;
+  heatmapData?: number[];
+}
+
+export type { Job, Jobs, JobOutput, JobType, JobProps, IAudioJob };
