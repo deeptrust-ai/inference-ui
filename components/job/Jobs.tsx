@@ -212,7 +212,7 @@ const JobCard = (props: JobCardProps) => {
             <div>
               <p>{resultMsg}</p>
               <p>
-                <b>Average Score Across Heatmap:</b> {score * 100}%
+                <b>Average Score Across Heatmap:</b> {(score * 100).toFixed(2)}%
               </p>
             </div>
           ) : (
