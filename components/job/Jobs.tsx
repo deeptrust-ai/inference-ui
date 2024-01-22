@@ -212,7 +212,7 @@ const JobCard = (props: JobCardProps) => {
             <div>
               <p>{resultMsg}</p>
               <p>
-                <b>Generated Likeliness Score:</b> {score * 100}%
+                <b>Average Score Across Heatmap:</b> {score * 100}%
               </p>
             </div>
           ) : (
@@ -240,13 +240,13 @@ const scoreChecker = (score: number): [string, string] => {
   let resultMsg;
   if (score < 0.5) {
     color = "bg-green-600";
-    resultMsg = "No generated speech found!";
+    resultMsg = "Low probability of generated speech!";
   } else if (score < 0.75) {
     color = "bg-yellow-500";
     resultMsg = "Be Cautious. Catching patterns of generated speech.";
   } else {
     color = "bg-red-400 border-white";
-    resultMsg = "Generated speech detected!";
+    resultMsg = "High probability of generated speech detected!";
   }
 
   return [color, resultMsg];
