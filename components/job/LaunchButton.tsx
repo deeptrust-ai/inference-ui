@@ -75,7 +75,6 @@ const LaunchButton = (props: JobProps & { className: string }) => {
     body.append("file", input);
     body.append("fileName", input.name);
     // TODO: Add modelType prop
-    body.append("modelType", "ss");
     const url = "/edge/job";
     const options = {
       method: "POST",

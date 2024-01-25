@@ -78,7 +78,6 @@ const LaunchJobButton = ({
     body.append("file", inputValue);
     body.append("fileName", inputValue.name);
     // TODO: Add modelType prop
-    body.append("modelType", "ss");
     const url = "/edge/job";
     const headers = { Authorization: `Bearer ${accessToken}` };
     const options = {

@@ -8,19 +8,17 @@ import FormData from "form-data";
 export async function POST(request: NextRequest) {
   const data = await request.formData();
   const file = data.get("file") as File;
-  const modelType = data.get("modelType");
+  // TODO: Update this
+  const orgId = 1;
+  const userID = 1;
 
-  if (modelType != "ss" && modelType != "xgb") {
-    console.error("ValueError: modelType needs to be set to 'ss' or 'xgb'");
-    return NextResponse.error();
-  }
-
-  const url = apiURLPrefix + modelType + "/job";
+  const url = apiURLPrefix + `job?org_id=${orgId}&user_id=${userID}`;
 
   const reqFormData = new FormData();
   const ab = await file.arrayBuffer();
   const buffer = Buffer.from(ab);
   reqFormData.append("file", buffer, file.name);
+
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",

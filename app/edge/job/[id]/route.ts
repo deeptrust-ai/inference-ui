@@ -11,7 +11,7 @@ export async function GET(
   { params }: { params: paramsType }
 ) {
   const { id } = params;
-  const url = apiURLPrefix + `job/${id}`;
+  const url = apiURLPrefix + `job/poll/${id}`;
   const auth = request.headers.get("Authorization");
   if (!auth) return; // for ts rules
 
