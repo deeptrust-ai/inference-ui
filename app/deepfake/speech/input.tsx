@@ -39,17 +39,17 @@ export default function Input() {
       <Label htmlFor="tabs">Choose Input Type</Label>
       <Tabs
         id="tabs"
-        defaultValue="tweet"
+        defaultValue="file"
         className="pb-6"
         onValueChange={() => setInput(null)}
       >
         <TabsList className="mb-12">
           {/* Triggers */}
-          <TabsTrigger value="tweet" className="flex gap-3">
-            𝕏 /Twitter <TwitterIcon />
-          </TabsTrigger>
           <TabsTrigger value="file" className="flex gap-3">
             File <FolderUp />
+          </TabsTrigger>
+          <TabsTrigger value="tweet" className="flex gap-3">
+            𝕏 /Twitter <TwitterIcon />
           </TabsTrigger>
         </TabsList>
         {/* Content */}
