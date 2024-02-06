@@ -30,7 +30,7 @@ const LaunchButton = (props: JobProps & { className: string }) => {
     setLoading(true);
     const data = await launcher();
 
-    if (data.id) {
+    if (data.jobID) {
       const output: JobOutput = {
         message: data.message,
       };
@@ -48,9 +48,9 @@ const LaunchButton = (props: JobProps & { className: string }) => {
       }
 
       // set localStorage
-      setJob(data.id, job);
+      setJob(data.jobID, job);
 
-      const updatedValue = { [data.id]: job };
+      const updatedValue = { [data.jobID]: job };
       setJobsState((currentJobs: Jobs) => ({
         ...currentJobs,
         ...updatedValue,
@@ -75,7 +75,6 @@ const LaunchButton = (props: JobProps & { className: string }) => {
     body.append("file", input);
     body.append("fileName", input.name);
     // TODO: Add modelType prop
-    body.append("modelType", "ss");
     const url = "/edge/job";
     const options = {
       method: "POST",

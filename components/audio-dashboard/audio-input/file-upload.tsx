@@ -78,7 +78,6 @@ const LaunchJobButton = ({
     body.append("file", inputValue);
     body.append("fileName", inputValue.name);
     // TODO: Add modelType prop
-    body.append("modelType", "ss");
     const url = "/edge/job";
     const headers = { Authorization: `Bearer ${accessToken}` };
     const options = {
@@ -97,7 +96,7 @@ const LaunchJobButton = ({
     setLoading(true);
     const data = await launchJob();
 
-    if (data.id) {
+    if (data.jobID) {
       const output: JobOutput = {
         message: data.message,
       };
@@ -111,9 +110,9 @@ const LaunchJobButton = ({
       job.origin = inputValue.name;
 
       // set localStorage
-      setJob(data.id, job);
+      setJob(data.jobID, job);
 
-      const updatedValue = { [data.id]: job };
+      const updatedValue = { [data.jobID]: job };
       // TODO: Remind sJS and setup for audio-dashboard
       setJobsState((currentJobs: Jobs) => ({
         ...currentJobs,

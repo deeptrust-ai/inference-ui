@@ -8,6 +8,7 @@ const setJob = (id: string, data: Job): void => {
 };
 
 const getJob = (id: string): Job | null => {
+  console.log("here");
   const jobs = getJobs();
   return jobs[id] || null;
 };

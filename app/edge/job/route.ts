@@ -8,14 +8,8 @@ import FormData from "form-data";
 export async function POST(request: NextRequest) {
   const data = await request.formData();
   const file = data.get("file") as File;
-  const modelType = data.get("modelType");
 
-  if (modelType != "ss" && modelType != "xgb") {
-    console.error("ValueError: modelType needs to be set to 'ss' or 'xgb'");
-    return NextResponse.error();
-  }
-
-  const url = apiURLPrefix + modelType + "/job";
+  const url = apiURLPrefix + "job";
 
   const reqFormData = new FormData();
   const ab = await file.arrayBuffer();
@@ -30,7 +24,9 @@ export async function POST(request: NextRequest) {
 
   try {
     const response = await axios.post(url, reqFormData, config).then((res) => {
-      return res.data;
+      return {
+        jobID: res.data.job_id,
+      };
     });
     return NextResponse.json(response);
   } catch (err) {
